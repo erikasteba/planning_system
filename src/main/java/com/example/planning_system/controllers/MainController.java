@@ -4,6 +4,7 @@ import com.example.planning_system.models.Day;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.time.LocalDate;
@@ -23,6 +24,7 @@ public class MainController {
         List<List<Day>> weeks = generateCalendarData(year, month);
         model.addAttribute("header", getMonthName(month) + " " + year);
         model.addAttribute("weeks", weeks);
+        model.addAttribute("selectedMonth", month); // Pass selectedMonth to the template
         return "calendar";
     }
 
@@ -33,7 +35,17 @@ public class MainController {
         };
         return monthNames[month - 1];
     }
+    @GetMapping("/calendar/{day}/{month}")
+    public String showEventDetails(@PathVariable int day, @PathVariable int month, Model model
+    ) {
+        // Implement logic to fetch event details or perform other actions
+        // Here, you can populate the model with event details and pass them to the view
+        // For example:
+        String eventDetails = "Event details for " + getMonthName(month) + " " + day;
+        model.addAttribute("eventDetails", eventDetails);
 
+        return "day-details"; // Return the name of the Thymeleaf template for event details
+    }
     private List<List<Day>> generateCalendarData(int year, int month) {
         List<List<Day>> weeks = new ArrayList<>();
 
