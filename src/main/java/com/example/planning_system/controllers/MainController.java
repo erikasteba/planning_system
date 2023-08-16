@@ -26,6 +26,7 @@ public class MainController {
         model.addAttribute("weeks", weeks);
         model.addAttribute("selectedMonth", month); // Pass selectedMonth to the template
         return "calendar";
+        //
     }
 
     private String getMonthName(int month) {
