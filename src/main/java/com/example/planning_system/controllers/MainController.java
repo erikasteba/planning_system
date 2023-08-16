@@ -38,13 +38,10 @@ public class MainController {
     @GetMapping("/calendar/{day}/{month}")
     public String showEventDetails(@PathVariable int day, @PathVariable int month, Model model
     ) {
-        // Implement logic to fetch event details or perform other actions
-        // Here, you can populate the model with event details and pass them to the view
-        // For example:
         String eventDetails = "Event details for " + getMonthName(month) + " " + day;
         model.addAttribute("eventDetails", eventDetails);
 
-        return "day-details"; // Return the name of the Thymeleaf template for event details
+        return "day-details";
     }
     private List<List<Day>> generateCalendarData(int year, int month) {
         List<List<Day>> weeks = new ArrayList<>();

@@ -210,7 +210,11 @@
                         </tr>
                         <tr th:each="week : ${weeks}">
                             <td th:each="day : ${week}">
-                                <span th:text="${day.dayOfMonth}" th:if="${day != null}"></span>
+                                <span th:if="${day != null}">
+                                    <a th:href="@{/calendar/{day}/{month}(day=${day.dayOfMonth}, month=${selectedMonth})}">
+                                        <button th:text="${day.dayOfMonth}"></button>
+                                    </a>
+                                </span>
                             </td>
                         </tr>
                     </table>
