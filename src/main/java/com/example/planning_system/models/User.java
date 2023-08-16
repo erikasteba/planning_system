@@ -10,6 +10,7 @@ import java.util.List;
 @Table(name = "\"user\"")
 public class User {
 
+
     @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
