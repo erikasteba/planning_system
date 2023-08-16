@@ -7,6 +7,7 @@ public class Day {
         this.dayOfMonth = dayOfMonth;
     }
 
+
     public int getDayOfMonth() {
         return dayOfMonth;
     }

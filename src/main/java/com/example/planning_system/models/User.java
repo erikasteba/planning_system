@@ -11,6 +11,7 @@ import java.util.List;
 public class User {
 
 
+
     @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
