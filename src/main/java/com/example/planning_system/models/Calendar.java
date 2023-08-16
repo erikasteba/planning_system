@@ -108,6 +108,7 @@ public class Calendar {
                 "July", "August", "September", "October", "November", "December"
         };
 
+
         System.out.println();
         String header = monthNames[month - 1] + " " + year;
 
