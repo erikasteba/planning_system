@@ -1,8 +1,15 @@
 package com.example.planning_system.controllers;
 
+import com.example.planning_system.models.Activities;
 import com.example.planning_system.models.Day;
+import com.example.planning_system.models.User;
+import com.example.planning_system.repositories.ActivitiesRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,15 +19,23 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.example.planning_system.service.CalendarService;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.planning_system.service.WeekService.generateDateTimeList;
+
 @Controller
 @RequiredArgsConstructor
 public class MainController {
     private final CalendarService calendarService;
+
+    @Autowired
+    private ActivitiesRepository activitiesRepository;
+
     @GetMapping("/")
     public String main(Model model){
         return "test";
@@ -53,8 +68,70 @@ public class MainController {
             dateNumbers.add(startDate.getDayOfMonth());
             startDate = startDate.plusDays(1);}
         String month = startDate.getMonth().toString();
+        int monthValue = startDate.getMonth().getValue();
         model.addAttribute("dateNumbers", dateNumbers);
         model.addAttribute("month", month);
+        model.addAttribute("monthValue", monthValue);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Long userId = null;
+        User user = (User) authentication.getPrincipal();
+        userId = user.getId();
+
+        List<Activities> activities = activitiesRepository.findByUserId(userId);
+
+        System.out.println(activities);
+
+        if (!activities.isEmpty()) {
+            Activities activity = activities.get(2);
+            model.addAttribute("activity", activity);
+
+            System.out.println(activity.getStartDate());
+            System.out.println(activity.getStartTime());
+            System.out.println(activity.getEndDate());
+            System.out.println(activity.getEndTime());
+
+        }
+
+        List<List<LocalDateTime>> dateTimeLists = new ArrayList<>();
+
+        for (Activities activity : activities) {
+            List<LocalDateTime> dateTimeList = generateDateTimeList(
+                    activity.getStartDate(),
+                    activity.getStartTime(),
+                    activity.getEndDate(),
+                    activity.getEndTime()
+            );
+            dateTimeLists.add(dateTimeList);
+        }
+        model.addAttribute("dateTimeLists", dateTimeLists);
+        model.addAttribute("activities", activities);
+
+        for (int i = 0; i < activities.size(); i++) {
+            Activities activity = activities.get(i);
+            List<LocalDateTime> dateTimeList = dateTimeLists.get(i);
+            System.out.println("Activity: " + activity.getName());
+            for (LocalDateTime dateTime : dateTimeList) {
+                System.out.println(dateTime);
+            }
+            System.out.println();
+        }
+
+
+
+
+        //LocalDate startDatee = LocalDate.of(2023, 8, 14);
+        //LocalTime startTime = LocalTime.of(19, 38);
+        //LocalDate endDate = LocalDate.of(2023, 8, 17);
+        //LocalTime endTime = LocalTime.of(21, 38);
+        //
+        //List<LocalDateTime> dateTimeList = generateDateTimeList(startDatee, startTime, endDate, endTime);
+        //
+        //for (LocalDateTime dateTime : dateTimeList) {
+            //    System.out.println(dateTime);
+            //}
+
+
         return "calendar-week";
     }
 
@@ -94,6 +171,11 @@ public class MainController {
 
         return redirectView;
     }
+
+
+
+
+
 
 
     @GetMapping("/calendar/{day}/{month}")
