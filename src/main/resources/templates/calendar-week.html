@@ -178,6 +178,7 @@
                 </tr>
                 </thead>
                 <tbody>
+<!--                -->
                   <tr th:each="hour : ${#numbers.sequence(6, 24)}">
                     <td class="align-middle" th:text="${hour + ':00'}"></td>
                     <td th:each="colNumber : ${#numbers.sequence(0, 6)}">
