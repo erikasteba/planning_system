@@ -1,6 +1,7 @@
 package com.example.planning_system.repositories;
 
 import com.example.planning_system.models.Activities;
+import com.example.planning_system.models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Repository
 public interface ActivitiesRepository extends JpaRepository<Activities, Long>{
+    List<Activities> findByUser(User user);
 
 
     @Query("SELECT a.name FROM Activities a WHERE a.user.id = :userId")

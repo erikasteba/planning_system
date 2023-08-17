@@ -7,7 +7,7 @@
             border-collapse: collapse;
         }
         th, td {
-            border: 1px solid black;
+            border: 100px solid black;
             padding: 8px;
             text-align: center;
         }
@@ -215,14 +215,14 @@
                             <th scope="col">Sat</th>
                         </tr>
                         <tr th:each="week : ${weeks}">
-                            <td th:each="day : ${week}">
-                                <span th:if="${day != null}">
+                            <td th:each="day : ${week}" th:classappend="${activityDates.contains(day) ? 'bg-danger' : ''}">
+                                <span th:if="${day != null} ">
                                     <a th:href="@{/calendar/{day}/{month}(day=${day.dayOfMonth}, month=${selectedMonth})}">
                                         <h6 th:text="${day.dayOfMonth}"></h6><br>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <button type="button" class="btn btn-primary">✎</button>
-                                            <button type="button" class="btn btn-danger">✌</button>
-                                        </div>
+<!--                                        <div class="d-flex justify-content-between align-items-center">-->
+<!--                                            <button type="button" class="btn btn-primary">✎</button>-->
+<!--                                            <button type="button" class="btn btn-danger">✌</button>-->
+<!--                                        </div>-->
                                     </a>
                                 </span>
                             </td>

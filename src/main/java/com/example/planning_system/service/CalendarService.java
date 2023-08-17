@@ -13,8 +13,8 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class CalendarService {
-    public List<List<Day>> generateCalendarData(int year, int month) {
-        List<List<Day>> weeks = new ArrayList<>();
+    public List<List<LocalDate>> generateCalendarData(int year, int month) {
+        List<List<LocalDate>> weeks = new ArrayList<>();
 
         LocalDate firstDayOfMonth = LocalDate.of(year, month, 1);
         int daysInMonth = firstDayOfMonth.getMonth().length(firstDayOfMonth.isLeapYear());
@@ -27,12 +27,12 @@ public class CalendarService {
 
         int day = 1;
         for (int week = 0; day <= daysInMonth; week++) {
-            List<Day> weekData = new ArrayList<>();
+            List<LocalDate> weekData = new ArrayList<>();
             for (int dow = 1; dow <= 7; dow++) {
                 if ((week == 0 && dow < dayOfWeek) || day > daysInMonth) {
                     weekData.add(null); // Padding days before and after the current month
                 } else {
-                    weekData.add(new Day(day));
+                    weekData.add(LocalDate.of(year, month, day));
                     day++;
                 }
             }
@@ -41,6 +41,7 @@ public class CalendarService {
 
         return weeks;
     }
+
 
     public String getMonthName(int month) {
         String[] monthNames = {

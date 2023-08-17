@@ -4,6 +4,8 @@ import com.example.planning_system.models.Activities;
 import com.example.planning_system.models.Day;
 import com.example.planning_system.models.User;
 import com.example.planning_system.repositories.ActivitiesRepository;
+import com.example.planning_system.models.User;
+import com.example.planning_system.service.ActivityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -30,6 +32,7 @@ import static com.example.planning_system.service.WeekService.generateDateTimeLi
 @RequiredArgsConstructor
 public class MainController {
     private final CalendarService calendarService;
+    private final ActivityService activityService;
 
     @Autowired
     private ActivitiesRepository activitiesRepository;
@@ -42,10 +45,22 @@ public class MainController {
     @GetMapping("/calendar")
     public String showCalendar(@RequestParam(name = "month", defaultValue = "1") int month, Model model) {
         int year = LocalDate.now().getYear();
-        List<List<Day>> weeks = calendarService.generateCalendarData(year, month);
+        List<List<LocalDate>> weeks = calendarService.generateCalendarData(year, month);
         model.addAttribute("header", calendarService.getMonthName(month) + " " + year);
         model.addAttribute("weeks", weeks);
-        model.addAttribute("selectedMonth", month); // Pass selectedMonth to the template
+        model.addAttribute("selectedMonth", month);
+
+        // Get the current authenticated user (if available)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            User user = (User) authentication.getPrincipal();
+            List<LocalDate> activityDates = activityService.getActivitiesDatesForUser(user);
+            for (LocalDate s: activityDates) {
+                System.out.println(s.toString());
+            }
+            model.addAttribute("activityDates", activityDates);
+        }
+
         return "calendar";
         //
     }
