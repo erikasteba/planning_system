@@ -1,3 +1,4 @@
+
 package com.example.planning_system.controllers;
 
 import org.springframework.ui.Model;
@@ -30,6 +31,7 @@ public class WeekController {
         model.addAttribute("month", month);
         return "calendar-week";
     }
+
 
     @GetMapping("/btnNextWeek")
     public RedirectView btnNextWeek(
