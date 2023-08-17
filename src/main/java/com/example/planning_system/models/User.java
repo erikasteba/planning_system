@@ -15,6 +15,7 @@ import java.util.*;
 public class User implements UserDetails {
 
 
+
     @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
