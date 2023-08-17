@@ -104,10 +104,15 @@ public class MainController {
     public String showEventDetails(@PathVariable int day, @PathVariable int month, Model model
     ) {
 
-        String eventDetails = "Event details for " + getMonthName(month) + " " + day;
+        String eventDetails = getMonthName(month) + " " + day;
         model.addAttribute("eventDetails", eventDetails);
         return "day-details";
     }
+
+
+
+
+
 
     private List<List<Day>> generateCalendarData(int year, int month) {
         List<List<Day>> weeks = new ArrayList<>();

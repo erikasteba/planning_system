@@ -153,11 +153,32 @@
 
                 <div>
 
-<h1>Event Details</h1>
-<p th:text="${eventDetails}"></p>
+
+<h4 th:text="${eventDetailsP}"></h4><h2 th:text="${eventDetails}"></h2><h4 th:text="${eventDetailsN}"></h4>
 
 
                 </div>
+
+
+                <div style="text-align: center;">
+                    <h2>Add new activity</h2>
+                    <form action="submit_activity.php" method="post">
+                        <label for="activity_name">Activity Name:</label>
+                        <input type="text" id="activity_name" name="activity_name" required><br><br>
+
+                        <label for="start_time">Starting Time:</label>
+                        <input type="time" id="start_time" name="start_time" required><br><br>
+
+                        <label for="end_time">Ending Time:</label>
+                        <input type="time" id="end_time" name="end_time" required><br><br>
+
+                        <input type="radio" id="public" name="visibility" value="public" required>Public
+                        <input type="radio" id="private" name="visibility" value="private" required>Private<br><br>
+
+                        <input type="submit" value="Create Activity">
+                    </form>
+                </div>
+
 
             </section>
         </div>

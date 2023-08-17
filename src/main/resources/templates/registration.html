@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <style>
+        Body {
+  font-family: Calibri, Helvetica, sans-serif;
+  background-color: #DED9D8;
+}
+button {
+       background-color: #524E93;
+       width: 100%;
+        color: black;
+        padding: 15px;
+        margin: 10px 0px;
+        border: none;
+        cursor: pointer;
+         }
+ form {
+        border: 3px solid #524E93;
+    }
+ input[type=text], input[type=password] {
+        width: 100%;
+        margin: 8px 0;
+        padding: 12px 20px;
+        display: inline-block;
+        border: 2px 524E93;
+        box-sizing: border-box;
+    }
+ button:hover {
+        opacity: 0.7;
+    }
+
+
+ .container {
+        padding: 25px;
+        background-color: #D2D6CF;
+    }
+    </style>
+</head>
+<body>
+
+<center><h1>Registration</h1></center>
+<form action="/user/registration" method="post">
+    <div class="container">
+        <label>Username : </label>
+        <input type="text" placeholder="Enter Username" name="name"><br></br>
+        <label>Email : </label>
+        <input type="email" placeholder="Enter Email" name="email"><br></br>
+        <label>Password : </label>
+        <input type="password" placeholder="Enter Password" name="password"><br></br>
+<!--    <input type="hidden" name="_csrf" value="${_csrf.token}">-->
+        <button> type="submit">Registeration</button>
+        </div>
+</form>
+
+</body>
+</html>
