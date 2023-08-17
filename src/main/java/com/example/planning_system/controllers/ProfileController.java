@@ -17,10 +17,15 @@ public class ProfileController {
     private final UserRepository userRepository;
 
     @GetMapping("/user/profile")
-    public String userProfile(@AuthenticationPrincipal UserDetails userDetails, Model model) {
-        String username = userDetails.getUsername();
-        User user = userRepository.findByUsername(username);
-        model.addAttribute("user", user);
+    public String userProfile(
+            //@AuthenticationPrincipal UserDetails userDetails,
+            Model model) {
+        //String username = userDetails.getUsername();
+        //User user = userRepository.findByUsername(username);
+        //model.addAttribute("user", user);
+        User dummyUser = new User("TestUser", "test@example.com", "Test User", "password");
+        model.addAttribute("user", dummyUser);
+
         return "profile";
     }
 
