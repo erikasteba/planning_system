@@ -22,10 +22,6 @@ public class Activities {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user_id;
-
     private String name;
 
     @JsonFormat(pattern = "HH:mm")
@@ -40,10 +36,9 @@ public class Activities {
 
     private boolean isPublic;
 
-    // I am not sure if I've made it correctly :D
-    // @ManyToOne
-    // @JoinColumn(name = "user_id", referencedColumnName = "id", insertable = false, updatable = false)
-    // private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
     public Activities() {
     }
 

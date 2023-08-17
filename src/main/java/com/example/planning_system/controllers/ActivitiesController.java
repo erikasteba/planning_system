@@ -3,6 +3,7 @@ package com.example.planning_system.controllers;
 import com.example.planning_system.models.Activities;
 import com.example.planning_system.models.User;
 import com.example.planning_system.repositories.ActivitiesRepository;
+import com.example.planning_system.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,7 +25,8 @@ public class ActivitiesController {
 
     @Autowired
     private ActivitiesRepository activitiesRepository;
-
+    @Autowired
+    private UserRepository userRepository;
 
     @GetMapping("/calendar/activities")
     public String showActivityForm() {
@@ -46,17 +48,11 @@ public class ActivitiesController {
         if (authentication != null && authentication.getPrincipal() instanceof User) {
             User user = (User) authentication.getPrincipal();
             userId = user.getId();
-
-
+            System.out.println("dasdaddada" + userId);
             String errorMessage = "";
             try {
                 startDateTime = LocalDateTime.parse(start_time);
                 endDateTime = LocalDateTime.parse(end_time);
-
-                //model.addAttribute("activity_name", activity_name);
-                //model.addAttribute("start_time", start_time);
-                //model.addAttribute("end_time", end_time);
-                //model.addAttribute("is_public", is_public);
 
                 if (startDateTime.isAfter(endDateTime)) {
                     errorMessage = "Please choose correct dates or time.";
@@ -72,10 +68,20 @@ public class ActivitiesController {
 
         }
 
+        Activities activity = new Activities(activity_name, startDateTime.toString(), endDateTime.toString(), is_public);
 
-        Activities activities = new Activities(activity_name, startDateTime.toString(), endDateTime.toString(), is_public);
-        activitiesRepository.save(activities);
-
+        activitiesRepository.save(activity);
+        System.out.println("dasdaddada" + userId);
+        User userEntity = userRepository.findById(userId).orElse(null);
+        if (userEntity != null) {
+            activity.setUser(userEntity); // Associate the user with the activity
+            activitiesRepository.save(activity);
+        } else {
+            // Handle the case where the user doesn't exist
+            String errorMessage = "User not found.";
+            model.addAttribute("errorMessage", errorMessage);
+            return "day-details";
+        }
 
         return "day-details";
 
