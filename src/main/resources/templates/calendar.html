@@ -6,11 +6,21 @@
 </head>
 <body>
 
-<div th:insert="blocks/header :: header"></div>
-<div th:insert="blocks/sidemenu :: sidemenu"></div>
+
+
+<div th:replace="blocks/sidemenu"></div>
+<!-- /# sidebar -->
+<div th:replace="blocks/header"></div>
 
 <!-- /# row -->
+
+
+<div class="content-wrap">
+    <div class="main">
+        <div class="container-fluid">
+
 <section id="main-content">
+
     <div class="container">
         <div class="table-responsive">
             <div>
