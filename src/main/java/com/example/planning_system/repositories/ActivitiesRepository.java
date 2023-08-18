@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ActivitiesRepository extends JpaRepository<Activities, Long>{
@@ -18,5 +19,7 @@ public interface ActivitiesRepository extends JpaRepository<Activities, Long>{
     List<String> findActivityNamesByUserId(@Param("userId") Long userId);
 
     List<Activities> findByUserId(Long user);
+
+    Optional<Activities> findById(Long id);
 
 }

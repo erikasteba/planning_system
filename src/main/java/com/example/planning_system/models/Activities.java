@@ -17,6 +17,9 @@ import java.time.LocalTime;
 public class Activities {
 
 
+    public Long getId() {
+        return id;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +36,10 @@ public class Activities {
     private LocalTime endTime;
 
     private LocalDate endDate;
+
+    public boolean isPublic() {
+        return isPublic;
+    }
 
     private boolean isPublic;
 

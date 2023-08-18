@@ -184,6 +184,51 @@
                 </div>
 
 
+
+
+
+                <div style="text-align: center;">
+                    <h2>List of my activities</h2><br>
+
+
+
+                    <table class="table table-striped" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th scope="col">Title</th>
+                            <th scope="col">Starts</th>
+                            <th scope="col">Ends</th>
+                            <th scope="col">Public/private</th>
+                            <th scope="col">###</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="activity : ${activities}">
+                            <th scope="row" th:text="${activity.getName()}"></th>
+                           <td th:text="${activity.getStartDate()} + '&nbsp&nbsp&nbsp&nbsp' + ${activity.getStartTime()}"></td>
+                            <td th:text="${activity.getEndDate()} + '&nbsp&nbsp&nbsp&nbsp' + ${activity.getEndTime()}"></td>
+                            <td th:if="${!activity.isPublic()}" th:text="Private" style="color: blue;"></td>
+                            <td th:if="${activity.isPublic()}" th:text="Public" style="color: green;"></td>
+                            <td>
+                                <form th:action="@{/calendar/activities/edit/{act_id}(act_id=${activity.id})}" method="post">
+                                    <button type="submit">Edit</button>
+                                </form>
+                                <form th:action="@{/calendar/activities/delete/{act_id}(act_id=${activity.id})}" method="post">
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+
+
+
+                </div>
+                <br>
+
+
+
             </section>
         </div>
     </div>

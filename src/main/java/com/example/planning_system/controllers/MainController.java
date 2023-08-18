@@ -95,16 +95,16 @@ public class MainController {
 
         System.out.println(activities);
 
-        if (!activities.isEmpty()) {
-            Activities activity = activities.get(2);
-            model.addAttribute("activity", activity);
-
-            System.out.println(activity.getStartDate());
-            System.out.println(activity.getStartTime());
-            System.out.println(activity.getEndDate());
-            System.out.println(activity.getEndTime());
-
-        }
+        //if (!activities.isEmpty()) {
+        //    Activities activity = activities.get(2);
+        //    model.addAttribute("activity", activity);
+//
+        //    System.out.println(activity.getStartDate());
+        //    System.out.println(activity.getStartTime());
+        //    System.out.println(activity.getEndDate());
+        //    System.out.println(activity.getEndTime());
+//
+        //}
 
         List<List<LocalDateTime>> dateTimeLists = new ArrayList<>();
 
