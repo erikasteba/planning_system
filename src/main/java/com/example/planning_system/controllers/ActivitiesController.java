@@ -15,9 +15,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,7 +64,7 @@ public class ActivitiesController {
         if (authentication != null && authentication.getPrincipal() instanceof User) {
             User user = (User) authentication.getPrincipal();
             userId = user.getId();
-            System.out.println("dasdaddada" + userId);
+            //System.out.println("dasdaddada" + userId);
             String errorMessage = "";
             try {
                 startDateTime = LocalDateTime.parse(start_time);
@@ -105,6 +108,10 @@ public class ActivitiesController {
 
 
 
+
+
+
+
     @PostMapping("/calendar/activities/delete/{act_id}")
     public String deleteActivity(@PathVariable("act_id") Long act_id) {
         Optional<Activities> activities = activitiesRepository.findById(act_id);
@@ -114,11 +121,85 @@ public class ActivitiesController {
     }
 
 
-    @PostMapping("/calendar/activities/edit/{act_id}")
-    public String editActivity(@PathVariable("act_id") Long act_id) {
+
+
+
+
+    @GetMapping("/calendar/activities/edit/{act_id}")
+    public String showActivityEditForm(@PathVariable("act_id") Long act_id, Model model) {
         Optional<Activities> activities = activitiesRepository.findById(act_id);
-        //activitiesRepository.delete(activities.get());
-        //System.out.println("test edit");
+
+        model.addAttribute("activities", activities);
+
+        Activities activity = activities.get();
+        System.out.println(activity.getName());
+        System.out.println(activity.isPublic());
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        String startTimeString = activity.getStartTime().format(timeFormatter);
+        String startDateString = activity.getStartDate().format(formatter);
+        String startDateTimeString = startDateString+'T'+startTimeString;
+
+        String endTimeString = activity.getEndTime().format(timeFormatter);
+        String endDateString = activity.getEndDate().format(formatter);
+        String endDateTimeString = endDateString+'T'+endTimeString;
+
+
+        model.addAttribute("name",activity.getName());
+        model.addAttribute("startDateTimeString",startDateTimeString);
+        model.addAttribute("endDateTimeString",endDateTimeString);
+        model.addAttribute("isPublic", activity.isPublic());
+
+        return "edit-activities";
+    }
+
+    @PostMapping("/calendar/activities/edit/{act_id}")
+    public String editActivity(@PathVariable("act_id") Long act_id, Model model,
+                               @RequestParam String activity_name,
+                               @RequestParam String start_time,
+                               @RequestParam String end_time,
+                               @RequestParam(name = "isPublic", defaultValue = "false") boolean isPublic){
+
+        Optional<Activities> activities = activitiesRepository.findById(act_id);
+        Activities activity = activities.get();
+        model.addAttribute("act_id", act_id);
+        String errorMessage = "";
+
+
+
+
+
+
+        String[] startParts = start_time.split("T");
+        String[] endParts = end_time.split("T");
+        LocalDate startDate = LocalDate.parse(startParts[0]);
+        LocalTime startTime = LocalTime.parse(startParts[1]);
+        LocalDate endDate = LocalDate.parse(endParts[0]);
+        LocalTime endTime = LocalTime.parse(endParts[1]);
+
+
+
+
+       //VALIDATION FOR APPROPRIATE START-END DATETIME HAS TO BE IMPLEMENTED
+
+
+
+        activity.setName(activity_name);
+        activity.setStartTime(startTime);
+        activity.setStartDate(startDate);
+        activity.setEndTime(endTime);
+        activity.setEndDate(endDate);
+        activity.setPublic(isPublic);
+
+        activitiesRepository.save(activity);
+
+
+
+
+
+
         return "redirect:/calendar/activities";
     }
 

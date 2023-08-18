@@ -33,9 +33,24 @@
     <link  type="text/css"  th:href="@{/bootstrap.min.css}" rel="stylesheet">
     <link type="text/css"  th:href="@{/helper.css}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <link rel="stylesheet" type="text/css"  th:href="@{/week.css}">
 
 
-
+    <style>
+        /* Your CSS styles here */
+        .popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border: 1px solid #ccc;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+    </style>
 </head>
 <body>
 
@@ -172,7 +187,35 @@
 
 
                         <input type="checkbox" id="is_public" name="is_public" value="true">
-                        <label for="is_public">Public</label><br><br>
+
+
+                        <div class="popup" id="popup">
+                            <button type="button" id="closePopup">Close</button>
+                            <p>If your activity is public, then your friends will see what you are doing!<br>If it it private, then thay will just see, that you are</p>
+                            <span class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">busy</span>
+                        </div>
+
+
+
+
+                       <label for="is_public">Public</label><h6><a id="openPopup">?</a></h6><br><br>
+
+
+                        <script>
+                            const openPopupButton = document.getElementById("openPopup");
+                            const closePopupButton = document.getElementById("closePopup");
+                            const popup = document.getElementById("popup");
+
+                            openPopupButton.addEventListener("click", function() {
+                                popup.style.display = "block";
+                            });
+
+                            closePopupButton.addEventListener("click", function() {
+                                popup.style.display = "none";
+                            });
+                        </script>
+
+
 
                         <input type="submit" value="Create Activity">
                     </form>
@@ -210,9 +253,11 @@
                             <td th:if="${!activity.isPublic()}" th:text="Private" style="color: blue;"></td>
                             <td th:if="${activity.isPublic()}" th:text="Public" style="color: green;"></td>
                             <td>
-                                <form th:action="@{/calendar/activities/edit/{act_id}(act_id=${activity.id})}" method="post">
-                                    <button type="submit">Edit</button>
-                                </form>
+
+                                <a th:href="@{/calendar/activities/edit/{act_id}(act_id=${activity.id})}">Edit</a>
+
+
+
                                 <form th:action="@{/calendar/activities/delete/{act_id}(act_id=${activity.id})}" method="post">
                                     <button type="submit">Delete</button>
                                 </form>
