@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Friendship Management</title>
+</head>
+<body>
+
+<h1>Friendship Management</h1>
+
+<!-- Send Friend Request -->
+<!--     <form action="/calendar/activities" method="post">-->
+<form action="/friendships/send-request" method="post">
+    <label for="senderId">Sender ID: </label>
+    <input type="text" id="senderId" name="senderId">
+    <br>
+    <label for="receiverId">Receiver ID: </label>
+    <input type="text" id="receiverId" name="receiverId">
+    <br>
+    <button type="submit">Send Friend Request</button>
+</form>
+
+
+<!-- Accept Friend Request -->
+<form action="/friendships/accept-request" method="post">
+    <label for="acceptSenderId">Sender ID (for accept): </label>
+    <input type="text" id="acceptSenderId" name="senderId">
+    <br>
+    <label for="acceptReceiverId">Receiver ID (for accept): </label>
+    <input type="text" id="acceptReceiverId" name="receiverId">
+    <br>
+    <button type="submit">Accept Friend Request</button>
+</form>
+
+<!-- Decline Friend Request -->
+<form th:action="@{/friendships/decline-request}" method="post">
+    <label for="declineSenderId">Sender ID (for decline): </label>
+    <input type="text" id="declineSenderId" name="senderId">
+    <br>
+    <label for="declineReceiverId">Receiver ID (for decline): </label>
+    <input type="text" id="declineReceiverId" name="receiverId">
+    <br>
+    <button type="submit">Decline Friend Request</button>
+</form>
+
+<!-- List Friends -->
+<form th:action="@{/friendships/list}" method="get">
+    <label for="userId">User ID (for list): </label>
+    <input type="text" id="userId" name="userId">
+    <br>
+    <button type="submit">List Friends</button>
+</form>
+
+</body>
+</html>
