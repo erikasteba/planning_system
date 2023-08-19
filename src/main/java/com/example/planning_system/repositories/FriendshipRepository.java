@@ -17,6 +17,8 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     List<Friendship> findByUser1OrUser2(User user1, User user2);
     @Query("SELECT f.id FROM Friendship f WHERE (f.user1 = :user1 AND f.user2 = :user2) OR (f.user1 = :user2 AND f.user2 = :user1)")
     Long findIdByUser1AndUser2(@Param("user1") User user1, @Param("user2") User user2);
+    @Query("SELECT f.status FROM Friendship f WHERE (f.user1 = :user1 AND f.user2 = :user2) OR (f.user1 = :user2 AND f.user2 = :user1)")
+    FriendshipStatus findStatusByUser1AndUser2(@Param("user1") User user1, @Param("user2") User user2);
 
     boolean existsByUser1AndUser2(User user1, User user2);
 

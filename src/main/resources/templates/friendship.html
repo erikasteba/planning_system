@@ -108,14 +108,15 @@
                         <thead>
                         <tr>
                             <th scope="col">Username</th>
+                            <th scope="col">Status</th>
                             <th scope="col">###</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="friend : ${friends}">
-
-                            <th scope="row" th:text="${friend.getName()}"></th>
-                            <td>
+                            <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }" th:text="${friend.name}"></td>
+                            <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }" th:text="${#strings.toUpperCase(friendshipStatusMap[friend.id])}" th:class="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' ? 'status-accepted' : #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' ? 'status-pending' : ''}"></td>
+                            <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }">
                                 <form th:action="@{/friendships/unfriend/{friendId}(friendId=${friend.getId()})}" method="post">
                                     <input type="hidden" name="friendId" th:value="${friend.getId()}" />
                                     <button type="submit">Unfriend</button>

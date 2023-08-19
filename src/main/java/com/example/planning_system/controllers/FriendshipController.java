@@ -1,6 +1,7 @@
 package com.example.planning_system.controllers;
 
 import ch.qos.logback.core.joran.sanity.Pair;
+import com.example.planning_system.enums.FriendshipStatus;
 import com.example.planning_system.models.Activities;
 import com.example.planning_system.models.Friendship;
 import com.example.planning_system.models.User;
@@ -45,8 +46,16 @@ public class FriendshipController {
         model.addAttribute("userId", userId);
 
         List<User> friends = friendshipService.listFriends(userId);
-
         model.addAttribute("friends", friends);
+
+
+        Map<Long, FriendshipStatus> friendshipStatusMap = new HashMap<>();
+        for (User friend : friends) {
+            FriendshipStatus friendshipStatus = friendshipRepository.findStatusByUser1AndUser2(user, friend);
+            friendshipStatusMap.put(friend.getId(), friendshipStatus);
+        }
+        model.addAttribute("friendshipStatusMap", friendshipStatusMap);
+
         //for (User friend : friends) {
         //    System.out.println(friend.getName());
         //}
@@ -101,7 +110,8 @@ public class FriendshipController {
         Optional<User> friendUser = userRepository.findById(friendId);
 
         Long friendshipId = friendshipRepository.findIdByUser1AndUser2(user, friendUser.get());
-
+        //FriendshipStatus friendshipStatus = friendshipRepository.findStatusByUser1AndUser2(user, friendUser.get());
+        //System.out.println(friendshipStatus);
         friendshipRepository.deleteById(friendshipId);
 
         return "redirect:/friendships/";
