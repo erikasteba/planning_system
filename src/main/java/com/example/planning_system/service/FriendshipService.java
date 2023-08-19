@@ -18,6 +18,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class FriendshipService {
+
     @Autowired
     private final FriendshipRepository friendshipRepository;
     @Autowired
@@ -69,6 +70,25 @@ public class FriendshipService {
 
         return friends;
     }
+
+    public List<Long> listFriendIds(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found."));
+
+        List<Friendship> friendships = friendshipRepository.findByUser1OrUser2(user, user);
+        List<Long> friendIds = new ArrayList<>();
+
+        for (Friendship friendship : friendships) {
+            User friendUser = (friendship.getUser1().equals(user)) ? friendship.getUser2() : friendship.getUser1();
+            friendIds.add(friendUser.getId());
+        }
+
+        return friendIds;
+    }
+
+
+
+
 
     public void acceptFriendRequest(Long senderId, Long receiverId) {
         Friendship friendship = findPendingFriendRequest(senderId, receiverId);
