@@ -21,4 +21,7 @@ public class UserService {
         userRepository.saveAndFlush(user);
         return true;
     }
+    public void updateUser(User user) {
+        userRepository.saveAndFlush(user);
+    }
 }
