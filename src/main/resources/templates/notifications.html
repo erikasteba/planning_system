@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
+  <title>test1</title>
+  <div th:insert="blocks/css-links :: css"></div>
+
+</head>
+<body>
+
+
+
+<div th:replace="blocks/sidemenu"></div>
+<!-- /# sidebar -->
+<div th:replace="blocks/header"></div>
+
+
+
+
+<div class="content-wrap" style="text-align:center;">
+  <div class="main">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-8 p-r-0 title-margin-right">
+          <div class="page-header">
+            <div class="page-title">
+              <h1>My notifications:</h1>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <!-- /# row -->
+      <section id="main-content">
+
+        <div>
+
+
+          <h3>Friend requests:</h3>
+
+          <table class="table table-striped" style="width:100%">
+            <thead>
+            <tr>
+              <th scope="col">Request</th>
+              <th scope="col">###</th>
+              <th scope="col">###</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="request : ${friendRequests}">
+              <td th:text="${request.user1.name} + ' wants to be your friend.'"></td>
+              <td>
+                <form th:action="@{/friendships/accept-request}" method="post">
+                  <input type="hidden" id="acceptSenderId" name="senderId" th:value="${request.user1.id}">
+                  <input type="hidden" id="acceptReceiverId" name="receiverId" th:value="${userId}">
+                  <button type="submit">Accept</button>
+                </form>
+              </td>
+              <td>
+                <form th:action="@{/friendships/decline-request}" method="post">
+                  <input type="hidden" id="declineSenderId" name="senderId" th:value="${request.user1.id}">
+                  <input type="hidden" id="declineReceiverId" name="receiverId" th:value="${userId}">
+                  <button type="submit">Decline</button>
+                </form>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+
+          <h3>Declined friendships :</h3>
+
+          <table class="table table-striped" style="width:100%">
+            <thead>
+            <tr>
+              <th scope="col">Request</th>
+              <th></th>
+              <th scope="col">###</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="request : ${friendRequestsDeclined}">
+              <td th:text="${request.user2.name} + ' declined your friend request.'"></td>
+              <td></td>
+              <td>
+                <form th:action="@{/friendships/unfriend/{friendId}(friendId=${request.user2.id})}" method="post">
+                  <input type="hidden" name="friendId" th:value="${request.user2.id}" />
+                  <button type="submit">Delete</button>
+                </form>
+              </td>
+              <td>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+
+        </div>
+
+      </section>
+    </div>
+  </div>
+</div>
+
+
+</body>
+</html>

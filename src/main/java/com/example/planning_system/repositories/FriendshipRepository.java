@@ -25,4 +25,7 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     Optional<Friendship> findById(Long id);
     Optional<Friendship> findByUser1AndUser2AndStatus(User user1, User user2, FriendshipStatus status);
 
+    List<Friendship> findByUser2AndStatus(User user, FriendshipStatus pending);
+
+    List<Friendship> findByUser1AndStatus(User user, FriendshipStatus declined);
 }
