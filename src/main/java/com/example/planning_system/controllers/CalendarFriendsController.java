@@ -61,8 +61,6 @@ public class CalendarFriendsController {
 
         List<Activities> activities = activitiesRepository.findByUserId(userId);
 
-
-
         List<User> friends = friendshipRepository.findUser2IdsByUser1IdAndStatus(user); // list of friends of current user
         List<List<Activities>> AllFriendsActivity = new ArrayList<>(); // each friend will have his list of activities and this is the list of those lists
         System.out.println("List of friends ");
@@ -74,7 +72,6 @@ public class CalendarFriendsController {
                 System.out.println("! " + a.toString());
             }
         }
-        System.out.println("");
         List<List<List<LocalDateTime>>> formattedFriendDateTimeLists = new ArrayList<>();
 
         for (List<Activities> list: AllFriendsActivity){
@@ -109,11 +106,6 @@ public class CalendarFriendsController {
         for (int i = 0; i < activities.size(); i++) {
             Activities activity = activities.get(i);
             List<LocalDateTime> dateTimeList = dateTimeLists.get(i);
-//            System.out.println("Name: " +  activity.getUser().getName() + " Activity: " + activity.getName());
-            for (LocalDateTime dateTime : dateTimeList) {
-//                System.out.println("Name: " +  activity.getUser().getName() + " " +dateTime);
-            }
-//            System.out.println();
         }
 
 

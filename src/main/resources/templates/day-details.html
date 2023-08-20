@@ -9,18 +9,18 @@
     <script src="https://kit.fontawesome.com/43124feaf5.js" crossorigin="anonymous"></script>
 
 
-    <link  type="text/css"  th:href="@{/calendar2/pignose.calendar.min.css}" rel="stylesheet">
-    <link type="text/css"  th:href="@{chartist/chartist.min.css}" rel="stylesheet">
-    <link  type="text/css"  th:href="@{/font-awesome.min.css}" rel="stylesheet">
-    <link  type="text/css"  th:href="@{/themify-icons.css}" rel="stylesheet">
-    <link  type="text/css"  th:href="@{/owl.carousel.min.css}" rel="stylesheet" />
-    <link  type="text/css"  th:href="@{/owl.theme.default.min.css}" rel="stylesheet" />
-    <link  type="text/css"  th:href="@{/weather-icons.css}" rel="stylesheet" />
-    <link  type="text/css"  th:href="@{/menubar/sidebar.css}" rel="stylesheet">
-    <link  type="text/css"  th:href="@{/bootstrap.min.css}" rel="stylesheet">
-    <link type="text/css"  th:href="@{/helper.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/calendar2/pignose.calendar.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{chartist/chartist.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/font-awesome.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/themify-icons.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/owl.carousel.min.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/owl.theme.default.min.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/weather-icons.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/menubar/sidebar.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/bootstrap.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/helper.css}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
-    <link rel="stylesheet" type="text/css"  th:href="@{/week.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/week.css}">
 
 
     <style>
@@ -36,6 +36,7 @@
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             z-index: 1000;
         }
+
     </style>
 </head>
 <body>
@@ -45,14 +46,9 @@
 <div th:replace="blocks/header"></div>
 
 
-
-
-
-
 <div class="content-wrap">
     <div class="main">
         <div class="container-fluid">
-
 
 
             <div class="row">
@@ -71,7 +67,8 @@
                 <div>
 
 
-<h4 th:text="${eventDetailsP}"></h4><h2 th:text="${eventDetails}"></h2><h4 th:text="${eventDetailsN}"></h4>
+                    <h4 th:text="${eventDetailsP}"></h4>
+                    <h2 th:text="${eventDetails}"></h2><h4 th:text="${eventDetailsN}"></h4>
 
 
                 </div>
@@ -93,14 +90,13 @@
 
                         <div class="popup" id="popup">
                             <button type="button" id="closePopup">Close</button>
-                            <p>If your activity is public, then your friends will see what you are doing!<br>If it it private, then thay will just see, that you are</p>
+                            <p>If your activity is public, then your friends will see what you are doing!<br>If it it
+                                private, then thay will just see, that you are</p>
                             <span class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">busy</span>
                         </div>
 
 
-
-
-                       <label for="is_public">Public</label><h6><a id="openPopup">?</a></h6><br><br>
+                        <label for="is_public">Public</label><h6><a id="openPopup">?</a></h6><br><br>
 
 
                         <script>
@@ -115,8 +111,8 @@
                             closePopupButton.addEventListener("click", function() {
                                 popup.style.display = "none";
                             });
-                        </script>
 
+                        </script>
 
 
                         <input type="submit" value="Create Activity">
@@ -129,12 +125,8 @@
                 </div>
 
 
-
-
-
                 <div style="text-align: center;">
                     <h2>List of my activities</h2><br>
-
 
 
                     <table class="table table-striped" style="width:100%">
@@ -150,7 +142,7 @@
                         <tbody>
                         <tr th:each="activity : ${activities}">
                             <th scope="row" th:text="${activity.getName()}"></th>
-                           <td th:text="${activity.getStartDate()} + '&nbsp&nbsp&nbsp&nbsp' + ${activity.getStartTime()}"></td>
+                            <td th:text="${activity.getStartDate()} + '&nbsp&nbsp&nbsp&nbsp' + ${activity.getStartTime()}"></td>
                             <td th:text="${activity.getEndDate()} + '&nbsp&nbsp&nbsp&nbsp' + ${activity.getEndTime()}"></td>
                             <td th:if="${!activity.isPublic()}" th:text="Private" style="color: blue;"></td>
                             <td th:if="${activity.isPublic()}" th:text="Public" style="color: green;"></td>
@@ -159,8 +151,8 @@
                                 <a th:href="@{/calendar/activities/edit/{act_id}(act_id=${activity.id})}">Edit</a>
 
 
-
-                                <form th:action="@{/calendar/activities/delete/{act_id}(act_id=${activity.id})}" method="post">
+                                <form th:action="@{/calendar/activities/delete/{act_id}(act_id=${activity.id})}"
+                                      method="post">
                                     <button type="submit">Delete</button>
                                 </form>
                             </td>
@@ -169,22 +161,14 @@
                     </table>
 
 
-
-
                 </div>
                 <br>
-
 
 
             </section>
         </div>
     </div>
 </div>
-
-
-
-
-
 
 
 </body>

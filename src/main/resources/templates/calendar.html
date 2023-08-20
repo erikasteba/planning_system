@@ -7,7 +7,6 @@
 <body>
 
 
-
 <div th:replace="blocks/sidemenu"></div>
 <!-- /# sidebar -->
 <div th:replace="blocks/header"></div>
@@ -19,62 +18,57 @@
     <div class="main">
         <div class="container-fluid">
 
-<section id="main-content">
+            <section id="main-content">
 
-    <div class="container">
-        <div class="table-responsive">
-            <div>
-                <form th:action="@{/calendar}" method="get">
-                    <label for="month">Select Month:</label>
-                    <select name="month" id="month">
-                        <option value="1">January</option>
-                        <option value="2">February</option>
-                        <option value="3">March</option>
-                        <option value="4">April</option>
-                        <option value="5">May</option>
-                        <option value="6">June</option>
-                        <option value="7">July</option>
-                        <option value="8">August</option>
-                        <option value="9">September</option>
-                        <option value="10">October</option>
-                        <option value="11">November</option>
-                        <option value="12">December</option>
-                    </select>
-                    <button type="submit">Go</button>
-                </form>
-                <h1 th:text="${header}" style="text-align: center;"></h1>
-                <table class="table table-bordered compact-table mt-4">
-                    <tr>
-                        <th scope="col">Sun</th>
-                        <th scope="col">Mon</th>
-                        <th scope="col">Tue</th>
-                        <th scope="col">Wed</th>
-                        <th scope="col">Thu</th>
-                        <th scope="col">Fri</th>
-                        <th scope="col">Sat</th>
-                    </tr>
-                    <tr th:each="week : ${weeks}">
-                        <td th:each="day : ${week}" th:classappend="${activityDates.contains(day) ? 'bg-danger' : ''}">
+                <div class="container">
+                    <div class="table-responsive">
+                        <div>
+                            <form th:action="@{/calendar}" method="get">
+                                <label for="month">Select Month:</label>
+                                <select name="month" id="month">
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                                <button type="submit">Go</button>
+                            </form>
+                            <h1 th:text="${header}" style="text-align: center;"></h1>
+                            <table class="table table-bordered compact-table mt-4">
+                                <tr>
+                                    <th scope="col">Sun</th>
+                                    <th scope="col">Mon</th>
+                                    <th scope="col">Tue</th>
+                                    <th scope="col">Wed</th>
+                                    <th scope="col">Thu</th>
+                                    <th scope="col">Fri</th>
+                                    <th scope="col">Sat</th>
+                                </tr>
+                                <tr th:each="week : ${weeks}">
+                                    <td th:each="day : ${week}"
+                                        th:classappend="${activityDates.contains(day) ? 'bg-danger' : ''}">
                                         <span th:if="${day != null} ">
                                             <a th:href="@{/calendar/{day}/{month}(day=${day.dayOfMonth}, month=${selectedMonth})}">
                                                 <h6 th:text="${day.dayOfMonth}"></h6><br>
-                                                <!--                                        <div class="d-flex justify-content-between align-items-center">-->
-                                                <!--                                            <button type="button" class="btn btn-primary">✎</button>-->
-                                                <!--                                            <button type="button" class="btn btn-danger">✌</button>-->
-                                                <!--                                        </div>-->
                                             </a>
                                         </span>
-                        </td>
-                    </tr>
-                </table>
-
-
-            </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
-</section>
-</div>
-</div>
 </div>
 
 

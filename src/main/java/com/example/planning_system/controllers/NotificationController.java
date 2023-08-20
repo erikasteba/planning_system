@@ -38,7 +38,6 @@ public class NotificationController {
         List<Friendship> friendRequestsDeclined = friendshipRepository.findByUser1AndStatus(user, FriendshipStatus.DECLINED);
         model.addAttribute("friendRequestsDeclined", friendRequestsDeclined );
 
-
         return "notifications";
     }
 

@@ -46,6 +46,7 @@ public class ActivitiesController {
 
         return "day-details";
     }
+
     @PostMapping("/calendar/activities")
     public String createActivity(
             @RequestParam String activity_name,
@@ -101,25 +102,12 @@ public class ActivitiesController {
 
     }
 
-
-
-
-
-
-
-
     @PostMapping("/calendar/activities/delete/{act_id}")
     public String deleteActivity(@PathVariable("act_id") Long act_id) {
         Optional<Activities> activities = activitiesRepository.findById(act_id);
         activitiesRepository.delete(activities.get());
-       //System.out.println("test delete");
         return "redirect:/calendar/activities";
     }
-
-
-
-
-
 
     @GetMapping("/calendar/activities/edit/{act_id}")
     public String showActivityEditForm(@PathVariable("act_id") Long act_id, Model model) {
@@ -136,16 +124,16 @@ public class ActivitiesController {
 
         String startTimeString = activity.getStartTime().format(timeFormatter);
         String startDateString = activity.getStartDate().format(formatter);
-        String startDateTimeString = startDateString+'T'+startTimeString;
+        String startDateTimeString = startDateString + 'T' + startTimeString;
 
         String endTimeString = activity.getEndTime().format(timeFormatter);
         String endDateString = activity.getEndDate().format(formatter);
-        String endDateTimeString = endDateString+'T'+endTimeString;
+        String endDateTimeString = endDateString + 'T' + endTimeString;
 
 
-        model.addAttribute("name",activity.getName());
-        model.addAttribute("startDateTimeString",startDateTimeString);
-        model.addAttribute("endDateTimeString",endDateTimeString);
+        model.addAttribute("name", activity.getName());
+        model.addAttribute("startDateTimeString", startDateTimeString);
+        model.addAttribute("endDateTimeString", endDateTimeString);
         model.addAttribute("isPublic", activity.isPublic());
 
         return "edit-activities";
@@ -156,17 +144,12 @@ public class ActivitiesController {
                                @RequestParam String activity_name,
                                @RequestParam String start_time,
                                @RequestParam String end_time,
-                               @RequestParam(name = "isPublic", defaultValue = "false") boolean isPublic){
+                               @RequestParam(name = "isPublic", defaultValue = "false") boolean isPublic) {
 
         Optional<Activities> activities = activitiesRepository.findById(act_id);
         Activities activity = activities.get();
         model.addAttribute("act_id", act_id);
         String errorMessage = "";
-
-
-
-
-
 
         String[] startParts = start_time.split("T");
         String[] endParts = end_time.split("T");
@@ -175,12 +158,7 @@ public class ActivitiesController {
         LocalDate endDate = LocalDate.parse(endParts[0]);
         LocalTime endTime = LocalTime.parse(endParts[1]);
 
-
-
-
-       //VALIDATION FOR APPROPRIATE START-END DATETIME HAS TO BE IMPLEMENTED
-
-
+        //VALIDATION FOR APPROPRIATE START-END DATETIME HAS TO BE IMPLEMENTED
 
         activity.setName(activity_name);
         activity.setStartTime(startTime);
@@ -191,15 +169,7 @@ public class ActivitiesController {
 
         activitiesRepository.save(activity);
 
-
-
-
-
-
-
         return "redirect:/calendar/activities";
     }
-
-
 
 }

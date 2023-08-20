@@ -8,8 +8,6 @@ import java.util.List;
 
 public class WeekService {
 
-
-
     public static List<LocalDateTime> generateDateTimeList(LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
         List<LocalDateTime> dateTimeList = new ArrayList<>();
 

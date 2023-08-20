@@ -27,7 +27,5 @@ public class Friendship {
 
     private LocalDateTime createdAt;
 
-
-
 }
 

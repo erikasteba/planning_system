@@ -36,7 +36,7 @@ public class MainController {
     private ActivitiesRepository activitiesRepository;
 
     @GetMapping("/")
-    public String main(Model model){
+    public String main(Model model) {
         return "test";
     }
 
@@ -53,14 +53,13 @@ public class MainController {
         if (authentication != null && authentication.getPrincipal() instanceof User) {
             User user = (User) authentication.getPrincipal();
             List<LocalDate> activityDates = activityService.getActivitiesDatesForUser(user);
-            for (LocalDate s: activityDates) {
+            for (LocalDate s : activityDates) {
                 System.out.println(s.toString());
             }
             model.addAttribute("activityDates", activityDates);
         }
 
         return "calendar";
-        //
     }
 
 
@@ -77,7 +76,8 @@ public class MainController {
         List<Integer> dateNumbers = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             dateNumbers.add(startDate.getDayOfMonth());
-            startDate = startDate.plusDays(1);}
+            startDate = startDate.plusDays(1);
+        }
         String month = startDate.getMonth().toString();
         int monthValue = startDate.getMonth().getValue();
         model.addAttribute("dateNumbers", dateNumbers);
@@ -159,15 +159,10 @@ public class MainController {
     @GetMapping("/calendar/{day}/{month}")
     public String showEventDetails(@PathVariable int day, @PathVariable int month, Model model
     ) {
-
         String eventDetails = calendarService.getMonthName(month) + " " + day;
         model.addAttribute("eventDetails", eventDetails);
         return "day-details";
     }
-
-
-
-
 
 }
 

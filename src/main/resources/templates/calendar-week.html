@@ -8,13 +8,9 @@
 <body>
 
 
-
 <!-- /# sidebar -->
 <div th:replace="blocks/sidemenu"></div>
 <div th:replace="blocks/header"></div>
-
-
-
 
 
 <div class="content-wrap">
@@ -28,91 +24,99 @@
                 </div>
 
             </div>
-<!-- /# row -->
-<section id="main-content">
+            <!-- /# row -->
+            <section id="main-content">
 
-    <div>
+                <div>
 
-        <div class="container">
-            <div class="table-responsive">
-                <div class="content-wrap">
-                    <div class="main">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-lg-8 p-r-0 title-margin-right">
-                                    <div class="page-header">
-                                        <div class="page-title">
+                    <div class="container">
+                        <div class="table-responsive">
+                            <div class="content-wrap">
+                                <div class="main">
+                                    <div class="container-fluid">
+                                        <div class="row">
+                                            <div class="col-lg-8 p-r-0 title-margin-right">
+                                                <div class="page-header">
+                                                    <div class="page-title">
 
 
-                                            <form th:action="@{/calendar-week}" method="get">
-                                                <h2>Selected Week:</h2>
-                                                <input type="week" id="week" name="week">
-                                                <button type="submit">Go</button>
-                                            </form>
+                                                        <form th:action="@{/calendar-week}" method="get">
+                                                            <h2>Selected Week:</h2>
+                                                            <input type="week" id="week" name="week">
+                                                            <button type="submit">Go</button>
+                                                        </form>
 
+
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                         </div>
+                                        <div>
+                                            <h1 th:text="${month}" style="text-align: center;"></h1>
+                                        </div>
+
+                                        <div style="text-align: center;">
+                                            <a style="margin-right: 10px;"
+                                               th:href="@{/btnPreviousWeek(week=${selectedWeek})}">
+                                                <button><</button>
+                                            </a><a style="margin-left: 10px;"
+                                                   th:href="@{/btnNextWeek(week=${selectedWeek})}">
+                                            <button>></button>
+                                        </a>
+                                        </div>
+
+
+                                        <table class="table table-bordered text-center">
+                                            <thead>
+                                            <tr class="bg-light-gray">
+                                                <th class="text-uppercase">Time
+                                                </th>
+                                                <th class="text-uppercase">Monday<p th:text="${dateNumbers[0]}"></p>
+                                                </th>
+                                                <th class="text-uppercase">Tuesday<p th:text="${dateNumbers[1]}"></p>
+                                                </th>
+                                                <th class="text-uppercase">Wednesday<p th:text="${dateNumbers[2]}"></p>
+                                                </th>
+                                                <th class="text-uppercase">Thursday<p th:text="${dateNumbers[3]}"></p>
+                                                </th>
+                                                <th class="text-uppercase">Friday<p th:text="${dateNumbers[4]}"></p>
+                                                </th>
+                                                <th class="text-uppercase">Saturday<p th:text="${dateNumbers[5]}"></p>
+                                                </th>
+                                                <th class="text-uppercase" style="text-align: center;">Sunday<p
+                                                        th:text="${dateNumbers[6]}"></p></th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!--                -->
+                                            <tr th:each="hour : ${#numbers.sequence(0, 24)}">
+                                                <td class="align-middle" th:text="${hour + ':00'}"></td>
+                                                <td th:each="colNumber : ${#numbers.sequence(0, 6)}">
+                                                    <ul th:each="dateTimeList, i : ${dateTimeLists}">
+                                                        <li th:each="dateTime : ${dateTimeList}">
+                                                    <span th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
+                                                            dateTime.getMonthValue() == monthValue and
+                                                            dateTime.toLocalTime().getHour() == hour}"
+                                                          th:text="${activities[i.index].name}"
+                                                          class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
+                                                    </span>
+                                                        </li>
+                                                    </ul>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
 
                             </div>
-                            <div>
-                                <h1 th:text="${month}" style="text-align: center;"></h1>
-                            </div>
-
-                            <div style="text-align: center;">
-                                <a style="margin-right: 10px;" th:href="@{/btnPreviousWeek(week=${selectedWeek})}">
-                                    <button><</button>
-                                </a><a style="margin-left: 10px;" th:href="@{/btnNextWeek(week=${selectedWeek})}">
-                                <button>></button>
-                            </a>
-                            </div>
 
 
-                            <table class="table table-bordered text-center">
-                                <thead>
-                                <tr class="bg-light-gray">
-                                    <th class="text-uppercase">Time
-                                    </th>
-                                    <th class="text-uppercase">Monday<p th:text="${dateNumbers[0]}"></p></th>
-                                    <th class="text-uppercase">Tuesday<p th:text="${dateNumbers[1]}"></p></th>
-                                    <th class="text-uppercase">Wednesday<p th:text="${dateNumbers[2]}"></p></th>
-                                    <th class="text-uppercase">Thursday<p th:text="${dateNumbers[3]}"></p></th>
-                                    <th class="text-uppercase">Friday<p th:text="${dateNumbers[4]}"></p></th>
-                                    <th class="text-uppercase">Saturday<p th:text="${dateNumbers[5]}"></p></th>
-                                    <th class="text-uppercase" style="text-align: center;">Sunday<p
-                                            th:text="${dateNumbers[6]}"></p></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <!--                -->
-                                <tr th:each="hour : ${#numbers.sequence(0, 24)}">
-                                    <td class="align-middle" th:text="${hour + ':00'}"></td>
-                                        <td th:each="colNumber : ${#numbers.sequence(0, 6)}">
-                                            <ul th:each="dateTimeList, i : ${dateTimeLists}">
-                                                <li th:each="dateTime : ${dateTimeList}">
-                                                    <span th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
-                                                            dateTime.getMonthValue() == monthValue and
-                                                            dateTime.toLocalTime().getHour() == hour}"
-                                                            th:text="${activities[i.index].name}"
-                                                        class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
-                                                    </span>
-                                                </li>
-                                            </ul>
-                                        </td>
-                                </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
-
                 </div>
-
-
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
         </div>
     </div>
 </div>

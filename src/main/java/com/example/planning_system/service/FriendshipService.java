@@ -34,20 +34,17 @@ public class FriendshipService {
     }
 
     public void sendFriendRequest(Long senderId, Long receiverId) {
-        // Check if sender and receiver exist
         User sender = userRepository.findById(senderId)
                 .orElseThrow(() -> new EntityNotFoundException("User with ID " + senderId + " not found."));
 
         User receiver = userRepository.findById(receiverId)
                 .orElseThrow(() -> new EntityNotFoundException("User with ID " + receiverId + " not found."));
 
-        // Check if a friend request already exists
         if (friendshipRepository.existsByUser1AndUser2(sender, receiver) ||
                 friendshipRepository.existsByUser1AndUser2(receiver, sender)) {
             throw new FriendshipException("Friend request already exists.");
         }
 
-        // Create and save the friend request
         Friendship friendship = new Friendship();
         friendship.setUser1(sender);
         friendship.setUser2(receiver);
@@ -85,10 +82,6 @@ public class FriendshipService {
 
         return friendIds;
     }
-
-
-
-
 
     public void acceptFriendRequest(Long senderId, Long receiverId) {
         Friendship friendship = findPendingFriendRequest(senderId, receiverId);

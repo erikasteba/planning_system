@@ -6,6 +6,8 @@ import com.example.planning_system.models.User;
 import com.example.planning_system.repositories.FriendshipRepository;
 import com.example.planning_system.repositories.UserRepository;
 import com.example.planning_system.service.FriendshipService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,6 +19,7 @@ import java.util.*;
 
 @Controller
 @RequestMapping("/friendships")
+@RequiredArgsConstructor
 public class FriendshipController {
 
     private final FriendshipService friendshipService;
@@ -26,11 +29,6 @@ public class FriendshipController {
 
     @Autowired
     private UserRepository userRepository;
-
-
-    public FriendshipController(FriendshipService friendshipService) {
-        this.friendshipService = friendshipService;
-    }
 
     @GetMapping("/")
     public String home(Model model){
@@ -90,8 +88,6 @@ public class FriendshipController {
         }
         return "friendship";
     }
-
-    // Other methods for managing friendships, such as unfriending, blocking, etc.
 
     @PostMapping("/unfriend/{friendId}")
     public String unfriend(@PathVariable Long friendId, @RequestParam("friendId") Long formFriendId) {

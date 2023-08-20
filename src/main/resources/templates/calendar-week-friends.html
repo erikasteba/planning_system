@@ -106,16 +106,16 @@
                                                         </li>
                                                     </ul>
                                                     <ul>
-                                                        <!--                                                            <ul th:each="friendDateTimeList, i : ${friendDateTimeLists}">    -->
                                                         <li th:each="friendDateTimeLists, i: ${formattedFriendDateTimeLists}">
                                                             <ul>
                                                                 <li th:each="dateTimeList, j: ${friendDateTimeLists}">
                                                                     <ul>
-                                                                        <li th:each="dateTime: ${dateTimeList}"><span th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
+                                                                        <li th:each="dateTime: ${dateTimeList}"><span
+                                                                                th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
                                                                                            dateTime.getMonthValue() == monthValue and
                                                                                            dateTime.toLocalTime().getHour() == hour}"
-                                                                                         th:text="${AllFriendsActivities[i.index][j.index].name}"
-                                                                                  class="bg-orange padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
+                                                                                th:text="${AllFriendsActivities[i.index][j.index].name}"
+                                                                                class="bg-orange padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
                                                                             </span>
                                                                         </li>
                                                                     </ul>

@@ -5,21 +5,20 @@
     <script src="https://kit.fontawesome.com/43124feaf5.js" crossorigin="anonymous"></script>
 
 
-    <link  type="text/css"  th:href="@{/calendar2/pignose.calendar.min.css}" rel="stylesheet">
-    <link type="text/css"  th:href="@{chartist/chartist.min.css}" rel="stylesheet">
-    <link  type="text/css"  th:href="@{/font-awesome.min.css}" rel="stylesheet">
-    <link  type="text/css"  th:href="@{/themify-icons.css}" rel="stylesheet">
-    <link  type="text/css"  th:href="@{/owl.carousel.min.css}" rel="stylesheet" />
-    <link  type="text/css"  th:href="@{/owl.theme.default.min.css}" rel="stylesheet" />
-    <link  type="text/css"  th:href="@{/weather-icons.css}" rel="stylesheet" />
-    <link  type="text/css"  th:href="@{/menubar/sidebar.css}" rel="stylesheet">
-    <link  type="text/css"  th:href="@{/bootstrap.min.css}" rel="stylesheet">
-    <link type="text/css"  th:href="@{/helper.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/calendar2/pignose.calendar.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{chartist/chartist.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/font-awesome.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/themify-icons.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/owl.carousel.min.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/owl.theme.default.min.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/weather-icons.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/menubar/sidebar.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/bootstrap.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/helper.css}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
-    <link rel="stylesheet" type="text/css"  th:href="@{/week.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/week.css}">
 </head>
 <body>
-
 
 
 <div th:replace="blocks/sidemenu"></div>
@@ -27,15 +26,9 @@
 <div th:replace="blocks/header"></div>
 
 
-
-
-
-
-
 <div class="content-wrap">
     <div class="main">
         <div class="container-fluid">
-
 
 
             <div class="row">
@@ -50,54 +43,17 @@
             <section id="main-content">
 
 
+                <h1>Friendship Management</h1>
 
-
-
-<h1>Friendship Management</h1>
-
-<!-- Send Friend Request -->
-<!--     <form action="/calendar/activities" method="post">-->
-<form action="/friendships/send-request" method="post">
-    <!--  <label for="senderId">Sender ID: </label> -->
-     <input type="hidden" id="senderId" name="senderId" th:value="${userId}">
-     <br>
-     <label for="receiverId">Receiver ID: </label>
-     <input type="text" id="receiverId" name="receiverId">
-     <br>
-     <button type="submit">Send Friend Request</button>
- </form>
-
-
- <!-- Accept Friend Request --> <!--
-<form action="/friendships/accept-request" method="post">
-    <label for="acceptSenderId">Sender ID (for accept): </label>
-    <input type="text" id="acceptSenderId" name="senderId">
-    <br>
-    <label for="acceptReceiverId">Receiver ID (for accept): </label>
-    <input type="text" id="acceptReceiverId" name="receiverId">
-    <br>
-    <button type="submit">Accept Friend Request</button>
-</form>-->
-
-<!-- Decline Friend Request --><!--
-<form th:action="@{/friendships/decline-request}" method="post">
-    <label for="declineSenderId">Sender ID (for decline): </label>
-    <input type="text" id="declineSenderId" name="senderId">
-    <br>
-    <label for="declineReceiverId">Receiver ID (for decline): </label>
-    <input type="text" id="declineReceiverId" name="receiverId">
-    <br>
-    <button type="submit">Decline Friend Request</button>
-</form>-->
-
-<!-- List Friends
-<form th:action="@{/friendships/list}" method="get">
-    <label for="userId">User ID (for list): </label>
-    <input type="text" id="userId" name="userId">
-    <br>
-    <button type="submit">List Friends</button>
-</form>
-                -->
+                <!-- Send Friend Request -->
+                <form action="/friendships/send-request" method="post">
+                    <input type="hidden" id="senderId" name="senderId" th:value="${userId}">
+                    <br>
+                    <label for="receiverId">Receiver ID: </label>
+                    <input type="text" id="receiverId" name="receiverId">
+                    <br>
+                    <button type="submit">Send Friend Request</button>
+                </form>
 
                 <br><br>
                 <div style="text-align: center;">
@@ -112,11 +68,15 @@
                         </thead>
                         <tbody>
                         <tr th:each="friend : ${friends}">
-                            <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }" th:text="${friend.name}"></td>
-                            <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }" th:text="${#strings.toUpperCase(friendshipStatusMap[friend.id])}" th:class="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' ? 'status-accepted' : #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' ? 'status-pending' : ''}"></td>
+                            <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }"
+                                th:text="${friend.name}"></td>
+                            <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }"
+                                th:text="${#strings.toUpperCase(friendshipStatusMap[friend.id])}"
+                                th:class="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' ? 'status-accepted' : #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' ? 'status-pending' : ''}"></td>
                             <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }">
-                                <form th:action="@{/friendships/unfriend/{friendId}(friendId=${friend.getId()})}" method="post">
-                                    <input type="hidden" name="friendId" th:value="${friend.getId()}" />
+                                <form th:action="@{/friendships/unfriend/{friendId}(friendId=${friend.getId()})}"
+                                      method="post">
+                                    <input type="hidden" name="friendId" th:value="${friend.getId()}"/>
                                     <button type="submit">Unfriend</button>
                                 </form>
                             </td>
@@ -127,14 +87,10 @@
                 <br>
 
 
-
-</section>
+            </section>
+        </div>
+    </div>
 </div>
-</div>
-</div>
-
-
-
 
 
 </body>
