@@ -1,5 +1,4 @@
 package com.example.planning_system.models;
-//>:)
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;

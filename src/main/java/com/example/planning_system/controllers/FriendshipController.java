@@ -1,11 +1,8 @@
 package com.example.planning_system.controllers;
 
-import ch.qos.logback.core.joran.sanity.Pair;
+
 import com.example.planning_system.enums.FriendshipStatus;
-import com.example.planning_system.models.Activities;
-import com.example.planning_system.models.Friendship;
 import com.example.planning_system.models.User;
-import com.example.planning_system.repositories.ActivitiesRepository;
 import com.example.planning_system.repositories.FriendshipRepository;
 import com.example.planning_system.repositories.UserRepository;
 import com.example.planning_system.service.FriendshipService;
@@ -17,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/friendships")
@@ -40,9 +36,8 @@ public class FriendshipController {
     public String home(Model model){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long userId = null;
         User user = (User) authentication.getPrincipal();
-        userId = user.getId();
+        Long userId = user.getId();
         model.addAttribute("userId", userId);
 
         List<User> friends = friendshipService.listFriends(userId);
@@ -56,16 +51,12 @@ public class FriendshipController {
         }
         model.addAttribute("friendshipStatusMap", friendshipStatusMap);
 
-        //for (User friend : friends) {
-        //    System.out.println(friend.getName());
-        //}
         return "friendship";
     }
 
     @PostMapping("/send-request")
     public String sendFriendRequest(@RequestParam Long senderId,
                                                @RequestParam Long receiverId, Model model) {
-        // Assuming FriendshipRequestDto has fields like "senderId" and "receiverId"
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
@@ -110,8 +101,6 @@ public class FriendshipController {
         Optional<User> friendUser = userRepository.findById(friendId);
 
         Long friendshipId = friendshipRepository.findIdByUser1AndUser2(user, friendUser.get());
-        //FriendshipStatus friendshipStatus = friendshipRepository.findStatusByUser1AndUser2(user, friendUser.get());
-        //System.out.println(friendshipStatus);
         friendshipRepository.deleteById(friendshipId);
 
         return "redirect:/friendships/";

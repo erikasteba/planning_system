@@ -23,9 +23,7 @@
             <div class="row">
                 <div class="col-lg-8 p-r-0 title-margin-right">
                     <div class="page-header">
-                        <div class="page-title">
-                            <h1>Hello, <span>username</span></h1>
-                        </div>
+
                     </div>
                 </div>
 
@@ -90,18 +88,18 @@
                                 <!--                -->
                                 <tr th:each="hour : ${#numbers.sequence(0, 24)}">
                                     <td class="align-middle" th:text="${hour + ':00'}"></td>
-                                    <td th:each="colNumber : ${#numbers.sequence(0, 6)}">
-                                        <ul th:each="dateTimeList, i : ${dateTimeLists}">
-                                            <li th:each="dateTime : ${dateTimeList}">
-                    <span th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
-                                   dateTime.getMonthValue() == monthValue and
-                                   dateTime.toLocalTime().getHour() == hour}"
-                          th:text="${activities[i.index].name}"
-                          class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
-                    </span>
-                                            </li>
-                                        </ul>
-                                    </td>
+                                        <td th:each="colNumber : ${#numbers.sequence(0, 6)}">
+                                            <ul th:each="dateTimeList, i : ${dateTimeLists}">
+                                                <li th:each="dateTime : ${dateTimeList}">
+                                                    <span th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
+                                                            dateTime.getMonthValue() == monthValue and
+                                                            dateTime.toLocalTime().getHour() == hour}"
+                                                            th:text="${activities[i.index].name}"
+                                                        class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </td>
                                 </tr>
                                 </tbody>
                             </table>

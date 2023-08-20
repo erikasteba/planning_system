@@ -56,9 +56,8 @@ public class CalendarFriendsController {
         model.addAttribute("monthValue", monthValue);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long userId = null;
         User user = (User) authentication.getPrincipal();
-        userId = user.getId();
+        Long userId = user.getId();
 
         List<Activities> activities = activitiesRepository.findByUserId(userId);
 

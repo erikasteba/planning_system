@@ -41,9 +41,7 @@
             <div class="row">
                 <div class="col-lg-8 p-r-0 title-margin-right">
                     <div class="page-header">
-                        <div class="page-title">
-                            <h1>Hello, <span>username</span></h1>
-                        </div>
+
                     </div>
                 </div>
 
@@ -70,7 +68,7 @@
  </form>
 
 
- <!-- Accept Friend Request -->
+ <!-- Accept Friend Request --> <!--
 <form action="/friendships/accept-request" method="post">
     <label for="acceptSenderId">Sender ID (for accept): </label>
     <input type="text" id="acceptSenderId" name="senderId">
@@ -79,9 +77,9 @@
     <input type="text" id="acceptReceiverId" name="receiverId">
     <br>
     <button type="submit">Accept Friend Request</button>
-</form>
+</form>-->
 
-<!-- Decline Friend Request -->
+<!-- Decline Friend Request --><!--
 <form th:action="@{/friendships/decline-request}" method="post">
     <label for="declineSenderId">Sender ID (for decline): </label>
     <input type="text" id="declineSenderId" name="senderId">
@@ -90,7 +88,7 @@
     <input type="text" id="declineReceiverId" name="receiverId">
     <br>
     <button type="submit">Decline Friend Request</button>
-</form>
+</form>-->
 
 <!-- List Friends
 <form th:action="@{/friendships/list}" method="get">

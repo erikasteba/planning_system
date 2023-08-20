@@ -21,8 +21,6 @@ import com.example.planning_system.service.CalendarService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.YearMonth;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,24 +85,12 @@ public class MainController {
         model.addAttribute("monthValue", monthValue);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long userId = null;
         User user = (User) authentication.getPrincipal();
-        userId = user.getId();
+        Long userId = user.getId();
 
         List<Activities> activities = activitiesRepository.findByUserId(userId);
 
         System.out.println(activities);
-
-        //if (!activities.isEmpty()) {
-        //    Activities activity = activities.get(2);
-        //    model.addAttribute("activity", activity);
-//
-        //    System.out.println(activity.getStartDate());
-        //    System.out.println(activity.getStartTime());
-        //    System.out.println(activity.getEndDate());
-        //    System.out.println(activity.getEndTime());
-//
-        //}
 
         List<List<LocalDateTime>> dateTimeLists = new ArrayList<>();
 
@@ -129,22 +115,6 @@ public class MainController {
             }
             System.out.println();
         }
-
-
-
-
-        //LocalDate startDatee = LocalDate.of(2023, 8, 14);
-        //LocalTime startTime = LocalTime.of(19, 38);
-        //LocalDate endDate = LocalDate.of(2023, 8, 17);
-        //LocalTime endTime = LocalTime.of(21, 38);
-        //
-        //List<LocalDateTime> dateTimeList = generateDateTimeList(startDatee, startTime, endDate, endTime);
-        //
-        //for (LocalDateTime dateTime : dateTimeList) {
-        //    System.out.println(dateTime);
-        //}
-
-
         return "calendar-week";
     }
 

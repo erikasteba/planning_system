@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,9 +35,8 @@ public class ActivitiesController {
     @GetMapping("/calendar/activities")
     public String showActivityForm(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Long userId = null;
         User user = (User) authentication.getPrincipal();
-        userId = user.getId();
+        Long userId = user.getId();
 
 
         List<Activities> activities = activitiesRepository.findByUserId(userId);
@@ -64,7 +62,7 @@ public class ActivitiesController {
         if (authentication != null && authentication.getPrincipal() instanceof User) {
             User user = (User) authentication.getPrincipal();
             userId = user.getId();
-            //System.out.println("dasdaddada" + userId);
+
             String errorMessage = "";
             try {
                 startDateTime = LocalDateTime.parse(start_time);
@@ -98,8 +96,6 @@ public class ActivitiesController {
             return "day-details";
         }
 
-
-        //return "day-details";
         return "redirect:/calendar/activities";
 
 
