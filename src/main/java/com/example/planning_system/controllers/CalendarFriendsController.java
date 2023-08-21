@@ -87,6 +87,7 @@ public class CalendarFriendsController {
             }
             formattedFriendDateTimeLists.add(friendDateTimeLists);
         }
+        model.addAttribute("friends", friends);
         model.addAttribute("formattedFriendDateTimeLists", formattedFriendDateTimeLists);
         model.addAttribute("AllFriendsActivities", AllFriendsActivity);
         List<List<LocalDateTime>> dateTimeLists = new ArrayList<>();
