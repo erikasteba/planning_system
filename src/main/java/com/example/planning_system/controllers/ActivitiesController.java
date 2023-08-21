@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.view.RedirectView;
 
 
 import java.time.LocalDate;
@@ -31,6 +32,8 @@ public class ActivitiesController {
     private ActivitiesRepository activitiesRepository;
     @Autowired
     private UserRepository userRepository;
+
+    String errorMessage = "";
 
     @GetMapping("/calendar/activities")
     public String showActivityForm(Model model) {
@@ -105,6 +108,7 @@ public class ActivitiesController {
     @PostMapping("/calendar/activities/delete/{act_id}")
     public String deleteActivity(@PathVariable("act_id") Long act_id) {
         Optional<Activities> activities = activitiesRepository.findById(act_id);
+
         activitiesRepository.delete(activities.get());
         return "redirect:/calendar/activities";
     }
@@ -112,12 +116,20 @@ public class ActivitiesController {
     @GetMapping("/calendar/activities/edit/{act_id}")
     public String showActivityEditForm(@PathVariable("act_id") Long act_id, Model model) {
         Optional<Activities> activities = activitiesRepository.findById(act_id);
-
         model.addAttribute("activities", activities);
-
         Activities activity = activities.get();
-        System.out.println(activity.getName());
-        System.out.println(activity.isPublic());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        Long userId = user.getId();
+        User activityUser = activity.getUser();
+        if (!activity.getUser().getId().equals(userId)) {
+            return "redirect:/calendar/activities";
+        }
+
+
+        //System.out.println(activity.getName());
+        //System.out.println(activity.isPublic());
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
@@ -135,6 +147,7 @@ public class ActivitiesController {
         model.addAttribute("startDateTimeString", startDateTimeString);
         model.addAttribute("endDateTimeString", endDateTimeString);
         model.addAttribute("isPublic", activity.isPublic());
+        model.addAttribute("errorMessage", errorMessage);
 
         return "edit-activities";
     }
@@ -149,7 +162,7 @@ public class ActivitiesController {
         Optional<Activities> activities = activitiesRepository.findById(act_id);
         Activities activity = activities.get();
         model.addAttribute("act_id", act_id);
-        String errorMessage = "";
+
 
         String[] startParts = start_time.split("T");
         String[] endParts = end_time.split("T");
@@ -159,6 +172,24 @@ public class ActivitiesController {
         LocalTime endTime = LocalTime.parse(endParts[1]);
 
         //VALIDATION FOR APPROPRIATE START-END DATETIME HAS TO BE IMPLEMENTED
+        LocalDateTime startDateTimeEdit = null;
+        LocalDateTime endDateTimeEdit = null;
+
+        String urlAgain = "/calendar/activities/edit/" + act_id;
+
+        try {
+            startDateTimeEdit = LocalDateTime.parse(start_time);
+            endDateTimeEdit = LocalDateTime.parse(end_time);
+            if (startDateTimeEdit.isAfter(endDateTimeEdit)) {
+                errorMessage = "Please choose correct dates or time.";
+                //model.addAttribute("errorMessage", errorMessage);
+                return "redirect:"+urlAgain;
+            }
+        } catch (DateTimeParseException e) {
+            errorMessage = "Invalid date and time format.";
+            //model.addAttribute("errorMessage", errorMessage);
+            return "redirect:"+urlAgain;
+        }
 
         activity.setName(activity_name);
         activity.setStartTime(startTime);
@@ -166,7 +197,7 @@ public class ActivitiesController {
         activity.setEndTime(endTime);
         activity.setEndDate(endDate);
         activity.setPublic(isPublic);
-
+        errorMessage = " ";
         activitiesRepository.save(activity);
 
         return "redirect:/calendar/activities";
