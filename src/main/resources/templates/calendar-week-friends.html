@@ -19,7 +19,9 @@
             <div class="row">
                 <div class="col-lg-8 p-r-0 title-margin-right">
                     <div class="page-header">
-
+                        <div class="page-title">
+                            <h1>Hello, <span>username</span></h1>
+                        </div>
                     </div>
                 </div>
 
@@ -40,7 +42,7 @@
                                                     <div class="page-title">
 
 
-                                                        <form th:action="@{/calendar-week}" method="get">
+                                                        <form th:action="@{/calendar-week-friends}" method="get">
                                                             <h2>Selected Week:</h2>
                                                             <input type="week" id="week" name="week">
                                                             <button type="submit">Go</button>
@@ -58,10 +60,10 @@
 
                                         <div style="text-align: center;">
                                             <a style="margin-right: 10px;"
-                                               th:href="@{/btnPreviousWeek(week=${selectedWeek})}">
+                                               th:href="@{/btnPreviousWeekFriend(week=${selectedWeek})}">
                                                 <button><</button>
                                             </a><a style="margin-left: 10px;"
-                                                   th:href="@{/btnNextWeek(week=${selectedWeek})}">
+                                                   th:href="@{/btnNextWeekFriend(week=${selectedWeek})}">
                                             <button>></button>
                                         </a>
                                         </div>
@@ -95,12 +97,30 @@
                                                 <td th:each="colNumber : ${#numbers.sequence(0, 6)}">
                                                     <ul th:each="dateTimeList, i : ${dateTimeLists}">
                                                         <li th:each="dateTime : ${dateTimeList}">
-                                                    <span th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
-                                                            dateTime.getMonthValue() == monthValue and
-                                                            dateTime.toLocalTime().getHour() == hour}"
-                                                          th:text="${activities[i.index].name}"
-                                                          class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
-                                                    </span>
+                    <span th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
+                                   dateTime.getMonthValue() == monthValue and
+                                   dateTime.toLocalTime().getHour() == hour}"
+                          th:text="${activities[i.index].name}"
+                          class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
+                    </span>
+                                                        </li>
+                                                    </ul>
+                                                    <ul>
+                                                        <li th:each="friendDateTimeLists, i: ${formattedFriendDateTimeLists}">
+                                                            <ul>
+                                                                <li th:each="dateTimeList, j: ${friendDateTimeLists}">
+                                                                    <ul>
+                                                                        <li th:each="dateTime: ${dateTimeList}"><span
+                                                                                th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
+                                                                                           dateTime.getMonthValue() == monthValue and
+                                                                                           dateTime.toLocalTime().getHour() == hour}"
+                                                                                th:text="${AllFriendsActivities[i.index][j.index].name}"
+                                                                                class="bg-orange padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
+                                                                            </span>
+                                                                        </li>
+                                                                    </ul>
+                                                                </li>
+                                                            </ul>
                                                         </li>
                                                     </ul>
                                                 </td>

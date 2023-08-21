@@ -2,238 +2,74 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Calendar</title>
-    <style>
-        table {
-            border-collapse: collapse;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-    </style>
-
-
-
-
-
-
-    <script src="https://kit.fontawesome.com/43124feaf5.js" crossorigin="anonymous"></script>
-
-    <link  href="calendar2/pignose.calendar.min.css"  type="text/css" rel="stylesheet">
-    <link  href="chartist.min.css" type="text/css" rel="stylesheet">
-    <link  href="font-awesome.min.css" type="text/css" rel="stylesheet">
-    <link  href="themify-icons.css" type="text/css" rel="stylesheet">
-    <link  href="owl.carousel.min.css" type="text/css" rel="stylesheet" />
-    <link  href="owl.theme.default.min.css" type="text/css" rel="stylesheet" />
-    <link  href="weather-icons.css" type="text/css" rel="stylesheet" />
-    <link  href="menubar/sidebar.css" type="text/css" rel="stylesheet">
-    <link  href="bootstrap.min.css" type="text/css" rel="stylesheet">
-    <link href="helper.css" type="text/css" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="style.css">
-
-    <link rel="stylesheet" type="text/css" href="week.css">
-
-
-
-
+    <div th:insert="blocks/css-links :: css"></div>
 </head>
 <body>
 
 
-
-
-
-
-<div class="sidebar sidebar-hide-to-small sidebar-shrink sidebar-gestures">
-    <div class="nano">
-        <div class="nano-content">
-            <ul>
-                <div class="logo"><a href="/index">
-                    <!-- <img src="images/logo.png" alt="" /> --><span>PLANNER</span></a></div>
-                <li class="label">Main</li>
-                <li><a class="sidebar-sub-toggle"><i class="ti-home"></i> Smth</a>
-                </li>
-
-                <li class="label">Apps</li>
-                <li><a href="/calendar"><i class="ti-calendar"></i> Calender MONTH</a></li>
-                <li><a href="/calendar-week"><i class="ti-email"></i> Calendar WEEK</a></li>
-                <li><a href="#"><i class="ti-user"></i> smth</a></li>
-                <li><a href="#"><i class="ti-layout-grid2-alt"></i> smth</a></li>
-
-
-
-
-
-                <li class="label">Extra</li>
-
-                <li><a><i class="ti-close"></i> Logout</a></li>
-            </ul>
-        </div>
-    </div>
-</div>
+<div th:replace="blocks/sidemenu"></div>
 <!-- /# sidebar -->
+<div th:replace="blocks/header"></div>
 
-<div class="header">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="float-left">
-
-                </div>
-                <div class="float-right">
-                    <div class="dropdown dib">
-                        <div class="header-icon" data-toggle="dropdown">
-                            <i class="fa-regular fa-bell"></i>
-
-                        </div>
-                    </div>
-                    <div class="dropdown dib">
-                        <div class="header-icon" data-toggle="dropdown">
-                                <span class="user-avatar">John
-                                    <i class="fa-regular fa-user"></i>
-                                </span>
-                            <div class="drop-down dropdown-profile dropdown-menu dropdown-menu-right">
-                                <div class="dropdown-content-body">
-                                    <ul>
-                                        <li>
-                                            <a href="#">
-                                                <i class="fa-regular fa-user"></i>
-                                                <span>Profile</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#">
-                                                <i class="ti-email"></i>
-                                                <span>Inbox</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="ti-settings"></i>
-                                                <span>Setting</span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a href="#">
-                                                <i class="ti-power-off"></i>
-                                                <span>Logout</span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<!-- /# row -->
 
 
 <div class="content-wrap">
     <div class="main">
         <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-8 p-r-0 title-margin-right">
-                    <div class="page-header">
-                        <div class="page-title">
-                            <h1>Hello, <span>username</span></h1>
-                        </div>
-                    </div>
-                </div>
 
-            </div>
-            <!-- /# row -->
             <section id="main-content">
 
-                <div>
-<!---->
-
-
-
-
-
-                    <!-- Month selection form -->
-                    <form th:action="@{/calendar}" method="get">
-                        <label for="month">Select Month:</label>
-                        <select name="month" id="month">
-                            <option value="1">January</option>
-                            <option value="2">February</option>
-                            <option value="3">March</option>
-                            <option value="4">April</option>
-                            <option value="5">May</option>
-                            <option value="6">June</option>
-                            <option value="7">July</option>
-                            <option value="8">August</option>
-                            <option value="9">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                        </select>
-                        <button type="submit">Go</button>
-                    </form>
-                    <h1 th:text="${header}" style="text-align: center;"></h1>
-                    <table>
-                        <tr>
-                            <th>Sun</th>
-                            <th>Mon</th>
-                            <th>Tue</th>
-                            <th>Wed</th>
-                            <th>Thu</th>
-                            <th>Fri</th>
-                            <th>Sat</th>
-                        </tr>
-                        <tr th:each="week : ${weeks}">
-                            <td th:each="day : ${week}">
-                                <span th:if="${day != null}">
-                                    <a th:href="@{/calendar/{day}/{month}(day=${day.dayOfMonth}, month=${selectedMonth})}">
-                                        <button th:text="${day.dayOfMonth}"></button>
-                                    </a>
-                                </span>
-                            </td>
-                        </tr>
-                    </table>
-
-
+                <div class="container">
+                    <div class="table-responsive">
+                        <div>
+                            <form th:action="@{/calendar}" method="get">
+                                <label for="month">Select Month:</label>
+                                <select name="month" id="month">
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
+                                </select>
+                                <button type="submit">Go</button>
+                            </form>
+                            <h1 th:text="${header}" style="text-align: center;"></h1>
+                            <table class="table table-bordered compact-table mt-4">
+                                <tr>
+                                    <th scope="col">Sun</th>
+                                    <th scope="col">Mon</th>
+                                    <th scope="col">Tue</th>
+                                    <th scope="col">Wed</th>
+                                    <th scope="col">Thu</th>
+                                    <th scope="col">Fri</th>
+                                    <th scope="col">Sat</th>
+                                </tr>
+                                <tr th:each="week : ${weeks}">
+                                    <td th:each="day : ${week}"
+                                        th:classappend="${activityDates.contains(day) ? 'bg-danger' : ''}">
+                                        <span th:if="${day != null} ">
+                                            <a th:href="@{/calendar/{day}/{month}(day=${day.dayOfMonth}, month=${selectedMonth})}">
+                                                <h6 th:text="${day.dayOfMonth}"></h6><br>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </section>
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
 
 
 </body>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Friendship Management</title>
+    <script src="https://kit.fontawesome.com/43124feaf5.js" crossorigin="anonymous"></script>
+
+
+    <link type="text/css" th:href="@{/calendar2/pignose.calendar.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{chartist/chartist.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/font-awesome.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/themify-icons.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/owl.carousel.min.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/owl.theme.default.min.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/weather-icons.css}" rel="stylesheet"/>
+    <link type="text/css" th:href="@{/menubar/sidebar.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/bootstrap.min.css}" rel="stylesheet">
+    <link type="text/css" th:href="@{/helper.css}" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/week.css}">
+</head>
+<body>
+
+
+<div th:replace="blocks/sidemenu"></div>
+<!-- /# sidebar -->
+<div th:replace="blocks/header"></div>
+
+
+<div class="content-wrap">
+    <div class="main">
+        <div class="container-fluid">
+
+
+            <div class="row">
+                <div class="col-lg-8 p-r-0 title-margin-right">
+                    <div class="page-header">
+
+                    </div>
+                </div>
+
+            </div>
+            <!-- /# row -->
+            <section id="main-content">
+
+
+                <h1>Friendship Management</h1>
+
+                <!-- Send Friend Request -->
+                <form action="/friendships/send-request" method="post">
+                    <input type="hidden" id="senderId" name="senderId" th:value="${userId}">
+                    <br>
+                    <label for="receiverId">Receiver ID: </label>
+                    <input type="text" id="receiverId" name="receiverId">
+                    <br>
+                    <button type="submit">Send Friend Request</button>
+                </form>
+
+                <br><br>
+                <div style="text-align: center;">
+                    <h2>My friends:</h2><br>
+                    <table class="table table-striped" style="width:100%">
+                        <thead>
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">###</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="friend : ${friends}">
+                            <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }"
+                                th:text="${friend.name}"></td>
+                            <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }"
+                                th:text="${#strings.toUpperCase(friendshipStatusMap[friend.id])}"
+                                th:class="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' ? 'status-accepted' : #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' ? 'status-pending' : ''}"></td>
+                            <td th:if="${#strings.toUpperCase(friendshipStatusMap[friend.id]) == 'ACCEPTED' or #strings.toUpperCase(friendshipStatusMap[friend.id]) == 'PENDING' }">
+                                <form th:action="@{/friendships/unfriend/{friendId}(friendId=${friend.getId()})}"
+                                      method="post">
+                                    <input type="hidden" name="friendId" th:value="${friend.getId()}"/>
+                                    <button type="submit">Unfriend</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+
+
+            </section>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

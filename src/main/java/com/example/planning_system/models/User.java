@@ -15,7 +15,6 @@ import java.util.*;
 public class User implements UserDetails {
 
 
-
     @jakarta.persistence.Id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,6 +28,8 @@ public class User implements UserDetails {
     @Getter
     private boolean active;
     private LocalDateTime dateOfCtreated;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Activities> activities = new ArrayList<>();
 
     @PrePersist
     private void init(){

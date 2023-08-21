@@ -1,56 +1,61 @@
 package com.example.planning_system.models;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import lombok.Data;
+import lombok.ToString;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+@Data
+@ToString
 @Entity
 @Table(name = "\"activities\"")
 public class Activities {
 
-    @Id
-    private Long id;
-
-    private Long user_id;
-
-    private String name;
-
-    public Long getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
-    }
-
-    @JsonFormat(pattern = "HH:mm")
-    private LocalTime time;
-
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public Long getId() {
         return id;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime startTime;
+
+    private LocalDate startDate;
+
+    @JsonFormat(pattern = "HH:mm")
+    private LocalTime endTime;
+
+    private LocalDate endDate;
+
+    public boolean isPublic() {
+        return isPublic;
+    }
+
+    private boolean isPublic;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+    public Activities() {
+    }
+
+    public Activities(String name, String startTime, String endTime, boolean isPublic) {
+        LocalDateTime start = LocalDateTime.parse(startTime);
+        LocalDateTime end = LocalDateTime.parse(endTime);
+        this.name = name;
+        this.startTime = start.toLocalTime();
+        this.startDate = start.toLocalDate();
+        this.endTime = end.toLocalTime();
+        this.endDate = end.toLocalDate();
+        this.isPublic = isPublic;
     }
 }
