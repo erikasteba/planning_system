@@ -61,7 +61,7 @@ public class CalendarFriendsController {
 
         List<Activities> activities = activitiesRepository.findByUserId(userId);
 
-        List<User> friends = friendshipRepository.findUser2IdsByUser1IdAndStatus(user); // list of friends of current user
+        List<User> friends = friendshipRepository.findFriends(user); // list of friends of current user
         List<List<Activities>> AllFriendsActivity = new ArrayList<>(); // each friend will have his list of activities and this is the list of those lists
         System.out.println("List of friends ");
         for (User u: friends) { // loops through all of friends and adds their activites to a list
@@ -87,6 +87,7 @@ public class CalendarFriendsController {
             }
             formattedFriendDateTimeLists.add(friendDateTimeLists);
         }
+        model.addAttribute("friends", friends);
         model.addAttribute("formattedFriendDateTimeLists", formattedFriendDateTimeLists);
         model.addAttribute("AllFriendsActivities", AllFriendsActivity);
         List<List<LocalDateTime>> dateTimeLists = new ArrayList<>();

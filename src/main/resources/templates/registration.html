@@ -2,58 +2,142 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create</title>
     <style>
-        Body {
-  font-family: Calibri, Helvetica, sans-serif;
-  background-color: #DED9D8;
-}
-button {
-       background-color: #524E93;
-       width: 100%;
-        color: black;
-        padding: 15px;
-        margin: 10px 0px;
-        border: none;
-        cursor: pointer;
-         }
- form {
-        border: 3px solid #524E93;
-    }
- input[type=text], input[type=password] {
-        width: 100%;
-        margin: 8px 0;
-        padding: 12px 20px;
-        display: inline-block;
-        border: 2px 524E93;
-        box-sizing: border-box;
-    }
- button:hover {
-        opacity: 0.7;
-    }
-
-
- .container {
-        padding: 25px;
-        background-color: #D2D6CF;
-    }
+        body {
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+          background: linear-gradient(to bottom, #f4f7fa, #dfe4ea);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+        }
+        .signup-container {
+          width: 300px;
+          padding: 20px;
+          background: #ffffff;
+          border-radius: 10px;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+          opacity: 0;
+          transform: translateY(20px);
+          animation: slide-up 0.5s forwards;
+        }
+        @keyframes slide-up {
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        .signup-container h1 {
+          margin: 0 0 20px;
+          text-align: center;
+          color: #3498db;
+          letter-spacing: 2px;
+        }
+        .form-group {
+          margin-bottom: 20px;
+        }
+        label {
+          display: block;
+          margin-bottom: 5px;
+          color: #333333;
+        }
+        input[type="text"], input[type="password"] {
+          width: 100%;
+          padding: 10px;
+          border: none;
+          border-bottom: 2px solid #3498db;
+          background: transparent;
+          color: #333333;
+          transition: border-color 0.3s;
+        }
+        input[type="text"]:focus, input[type="password"]:focus {
+          border-color: #48a5e3;
+        }
+        .error {
+          border-color: #e74c3c !important;
+        }
+        .success {
+          border-color: #2ecc71 !important;
+        }
+        .btn {
+          display: block;
+          width: 100%;
+          padding: 10px;
+          background-color: #3498db;
+          color: #ffffff;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+        }
+        .btn:hover {
+          background-color: #2186c7;
+        }
+        .error-message {
+          margin-top: 5px;
+          font-size: 12px;
+          color: #e74c3c;
+        }
+        .login-link {
+          text-align: center;
+          margin-top: 10px;
+          font-size: 14px;
+          color: #333333;
+        }
+        .login-link a {
+          color: #3498db;
+          text-decoration: none;
+          transition: color 0.3s;
+        }
+        .login-link a:hover {
+          color: #2186c7;
+        }
     </style>
 </head>
 <body>
-
-<center><h1>Registration</h1></center>
-<form action="/user/registration" method="post">
-    <div class="container">
-        <label>Username : </label>
-        <input type="text" placeholder="Enter Username" name="name"><br></br>
-        <label>Email : </label>
-        <input type="email" placeholder="Enter Email" name="email"><br></br>
-        <label>Password : </label>
-        <input type="password" placeholder="Enter Password" name="password"><br></br>
-<!--    <input type="hidden" name="_csrf" value="${_csrf.token}">-->
-        <button> type="submit">Registeration</button>
+<div class="signup-container">
+    <h1>Create</h1>
+    <form id="signup-form" action="/user/registration" method="post">
+        <div class="form-group">
+            <label for="fullname">Full Name</label>
+            <input type="text" id="fullname" name="fullname" placeholder="Enter your full name" required>
         </div>
-</form>
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="text" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Password (at least 8 characters)</label>
+            <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            <p class="error-message" id="password-error"></p>
+        </div>
+        <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+            <p class="error-message" id="confirm-password-error"></p>
+        </div>
+        <button class="btn" type="submit">Create</button>
+    </form>
+    <p class="login-link">Already a member? <a href="/user/login">Log in</a></p>
+</div>
+<script>
+    var password = document.getElementById("password");
 
+
+    var confirmPassword = document.getElementById("confirm-password");
+    function validatePassword(){
+        if(password.value != confirmPassword.value) {
+            confirmPassword.setCustomValidity("Passwords are incorrect");
+        }else{
+          confirmPassword.setCustomValidity('');
+        }
+    }
+    password.onchange = validatePassword;
+    confirmPassword.onkeyup = validatePassword;
+</script>
 </body>
 </html>
