@@ -83,9 +83,9 @@
                                                 <li th:each="friend, i : ${friends}">
                                                     <span style="margin-right: 5px;"
                                                             th:text="${friend.getName()}"
-                                                         th:class="${i.index % 4 == 0 ? 'bg-orange' :
-                                                                                             i.index % 4 == 1 ? 'bg-green' :
-                                                                                             i.index % 4 == 2 ? 'bg-yellow' :
+                                                         th:class="${i.index == 0 ? 'bg-orange' :
+                                                                                             i.index == 1 ? 'bg-green' :
+                                                                                             i.index == 2 ? 'bg-yellow' :
                                                                                              'bg-lightred'} + ' padding-5px-tb padding-15px-lr margin-right-5px  border-radius-5 text-white font-size16 xs-font-size13'">
                                                     </span>
                                                 </li>
@@ -138,9 +138,9 @@
                                                                                            dateTime.getMonthValue() == monthValue and
                                                                                            dateTime.toLocalTime().getHour() == hour}"
                                                                                 th:text="${AllFriendsActivities[i.index][j.index].name}"
-                                                                                th:class="${j.index % 4 == 0 ? 'bg-orange' :
-                                                                                             j.index % 4 == 1 ? 'bg-green' :
-                                                                                             j.index % 4 == 2 ? 'bg-yellow' :
+                                                                                th:class="${i.index == 0 ? 'bg-orange' :
+                                                                                             i.index == 1 ? 'bg-green' :
+                                                                                             i.index == 2 ? 'bg-yellow' :
                                                                                              'bg-lightred'} + ' padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13'">
                                                                             </span>
                                                                         </li>
