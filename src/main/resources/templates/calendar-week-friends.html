@@ -4,8 +4,10 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <div th:insert="blocks/css-links :: css"></div>
+
 </head>
 <body>
+
 
 
 <!-- /# sidebar -->
@@ -68,6 +70,27 @@
                                         </a>
                                         </div>
 
+                                        <div class="margin-10px-top margin-10px-bottom">
+                                            <ul style="display: flex;
+                                                       list-style-type: none;
+                                                       padding: 0;">
+                                                <li>
+                                                    <span   style="margin-right: 10px;"
+                                                            class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 margin-right-5px text-white font-size16 xs-font-size13">Me
+                                                    </span>
+
+                                                </li>
+                                                <li th:each="friend, i : ${friends}">
+                                                    <span style="margin-right: 5px;"
+                                                            th:text="${friend.getName()}"
+                                                         th:class="${i.index == 0 ? 'bg-orange' :
+                                                                                             i.index == 1 ? 'bg-green' :
+                                                                                             i.index == 2 ? 'bg-yellow' :
+                                                                                             'bg-lightred'} + ' padding-5px-tb padding-15px-lr margin-right-5px  border-radius-5 text-white font-size16 xs-font-size13'">
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        </div>
 
                                         <table class="table table-bordered text-center">
                                             <thead>
@@ -115,7 +138,10 @@
                                                                                            dateTime.getMonthValue() == monthValue and
                                                                                            dateTime.toLocalTime().getHour() == hour}"
                                                                                 th:text="${AllFriendsActivities[i.index][j.index].name}"
-                                                                                class="bg-orange padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
+                                                                                th:class="${i.index == 0 ? 'bg-orange' :
+                                                                                             i.index == 1 ? 'bg-green' :
+                                                                                             i.index == 2 ? 'bg-yellow' :
+                                                                                             'bg-lightred'} + ' padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13'">
                                                                             </span>
                                                                         </li>
                                                                     </ul>
