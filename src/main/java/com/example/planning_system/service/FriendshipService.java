@@ -24,7 +24,7 @@ public class FriendshipService {
     @Autowired
     private final UserRepository userRepository;
 
-    private Friendship findPendingFriendRequest(Long senderId, Long receiverId) {
+    Friendship findPendingFriendRequest(Long senderId, Long receiverId) {
         User sender = userRepository.findById(senderId)
                 .orElseThrow(() -> new EntityNotFoundException("User with ID " + senderId + " not found."));
         User receiver = userRepository.findById(receiverId)
