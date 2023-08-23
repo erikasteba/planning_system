@@ -47,6 +47,15 @@ public class Activities {
     private User user;
     public Activities() {
     }
+    @Transient
+    private boolean isActiveNow;
+    public boolean isActiveNow() {
+        return isActiveNow;
+    }
+
+    public void setActiveNow(boolean activeNow) {
+        isActiveNow = activeNow;
+    }
 
     public Activities(String name, String startTime, String endTime, boolean isPublic) {
         LocalDateTime start = LocalDateTime.parse(startTime);
