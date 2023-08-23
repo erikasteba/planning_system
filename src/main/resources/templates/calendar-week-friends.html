@@ -133,15 +133,24 @@
                                                             <ul>
                                                                 <li th:each="dateTimeList, j: ${friendDateTimeLists}">
                                                                     <ul>
-                                                                        <li th:each="dateTime: ${dateTimeList}"><span
+                                                                        <li th:each="dateTime: ${dateTimeList}">
+                                                                            <span
                                                                                 th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
                                                                                            dateTime.getMonthValue() == monthValue and
                                                                                            dateTime.toLocalTime().getHour() == hour}"
-                                                                                th:text="${AllFriendsActivities[i.index][j.index].name}"
+
                                                                                 th:class="${i.index == 0 ? 'bg-orange' :
                                                                                              i.index == 1 ? 'bg-green' :
                                                                                              i.index == 2 ? 'bg-yellow' :
                                                                                              'bg-lightred'} + ' padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13'">
+
+                                                                            <span th:if="${AllFriendsActivities[i.index][j.index].public}">
+                                                                                <span th:text="${AllFriendsActivities[i.index][j.index].name}"></span>
+                                                                            </span>
+                                                                            <span th:unless="${AllFriendsActivities[i.index][j.index].public}">
+                                                                                BUSY
+                                                                            </span>
+
                                                                             </span>
                                                                         </li>
                                                                     </ul>

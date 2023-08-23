@@ -101,15 +101,15 @@ public class ActivitiesController {
         }
 
         return "redirect:/calendar/activities";
-
-
     }
+
 
     @PostMapping("/calendar/activities/delete/{act_id}")
     public String deleteActivity(@PathVariable("act_id") Long act_id) {
         Optional<Activities> activities = activitiesRepository.findById(act_id);
-
-        activitiesRepository.delete(activities.get());
+        if (activities.isPresent()) {
+            activitiesRepository.delete(activities.get());
+        }
         return "redirect:/calendar/activities";
     }
 
@@ -126,11 +126,6 @@ public class ActivitiesController {
         if (!activity.getUser().getId().equals(userId)) {
             return "redirect:/calendar/activities";
         }
-
-
-        //System.out.println(activity.getName());
-        //System.out.println(activity.isPublic());
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm");
 
@@ -171,7 +166,6 @@ public class ActivitiesController {
         LocalDate endDate = LocalDate.parse(endParts[0]);
         LocalTime endTime = LocalTime.parse(endParts[1]);
 
-        //VALIDATION FOR APPROPRIATE START-END DATETIME HAS TO BE IMPLEMENTED
         LocalDateTime startDateTimeEdit = null;
         LocalDateTime endDateTimeEdit = null;
 
