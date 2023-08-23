@@ -6,6 +6,7 @@
     <title>test1</title>
     <div th:insert="blocks/css-links :: css"></div>
     <link rel="stylesheet" type="text/css" href="indexpage.css">
+    <link rel="stylesheet" type="text/css" href="notesstyle.css">
 </head>
 <body>
 
@@ -78,10 +79,36 @@
                                 </th:block>
                             </ul>
 
+                        </div>
 
 
+                        <div class="col-lg-2 mb-2">
 
                         </div>
+
+
+                        <div class="col-lg-5 mb-3">
+                            <h4>Create Note</h4>
+                            <form id="noteForm" action="/index/note" method="post">
+                                <textarea id="noteContent" name="content" placeholder="Note Content" required style="width: 350px; height: 50px;"></textarea><br>
+                                <button type="submit" id="createNoteBtn">Create Note</button>
+                            </form>
+                            <br><br>
+                            <h4>Notes:</h4>
+                            <div style="background-color: white;">
+                                <ul th:each="note : ${notes}">
+                                    <h6><li th:text="${note.content}"></li></h6>
+                                    <br>
+                                    <form id="noteDeleteForm" action="/index/note/delete" method="post">
+                                        <input type="hidden" name="noteid" th:value="${note.id}">
+                                        <button type="submit" id="deleteNoteBtn">Delete</button>
+                                    </form>
+                                    <hr align="right" style="border-top: 3px dotted green;">
+                                </ul>
+                            </div>
+                        </div>
+
+
 
                     </div>
                 </div>
