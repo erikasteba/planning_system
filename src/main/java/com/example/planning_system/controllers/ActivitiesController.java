@@ -44,6 +44,7 @@ public class ActivitiesController {
 
         List<Activities> activities = activitiesRepository.findByUserId(userId);
         model.addAttribute("activities", activities);
+        model.addAttribute("errorMessage", errorMessage);
         System.out.println(activities);
         System.out.println("test");
 
@@ -59,7 +60,7 @@ public class ActivitiesController {
             Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
+        //String errorMessage = "";
         Long userId = null;
         LocalDateTime startDateTime = null;
         LocalDateTime endDateTime = null;
@@ -67,7 +68,7 @@ public class ActivitiesController {
             User user = (User) authentication.getPrincipal();
             userId = user.getId();
 
-            String errorMessage = "";
+
             try {
                 startDateTime = LocalDateTime.parse(start_time);
                 endDateTime = LocalDateTime.parse(end_time);
@@ -75,7 +76,7 @@ public class ActivitiesController {
                 if (startDateTime.isAfter(endDateTime)) {
                     errorMessage = "Please choose correct dates or time.";
                     model.addAttribute("errorMessage", errorMessage);
-                    return "day-details";
+                    return "redirect:/calendar/activities";
                 }
             } catch (DateTimeParseException e) {
                 errorMessage = "Invalid date and time format.";
@@ -89,17 +90,17 @@ public class ActivitiesController {
         Activities activity = new Activities(activity_name, startDateTime.toString(), endDateTime.toString(), is_public);
 
         activitiesRepository.save(activity);
-        System.out.println("dasdaddada" + userId);
+        //System.out.println("dasdaddada" + userId);
         User userEntity = userRepository.findById(userId).orElse(null);
         if (userEntity != null) {
             activity.setUser(userEntity);
             activitiesRepository.save(activity);
         } else {
-            String errorMessage = "User not found.";
+            errorMessage = "User not found.";
             model.addAttribute("errorMessage", errorMessage);
-            return "day-details";
+            return "redirect:/calendar/activities";
         }
-
+        errorMessage=" ";
         return "redirect:/calendar/activities";
     }
 

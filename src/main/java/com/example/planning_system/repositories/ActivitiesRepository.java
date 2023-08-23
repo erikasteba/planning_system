@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,5 +22,8 @@ public interface ActivitiesRepository extends JpaRepository<Activities, Long>{
     List<Activities> findByUserId(Long user);
 
     Optional<Activities> findById(Long id);
+
+    List<Activities> findByUserAndStartDateEquals(User user, LocalDate date);
+
 
 }

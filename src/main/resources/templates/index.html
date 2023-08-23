@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css">
     <title>test1</title>
     <div th:insert="blocks/css-links :: css"></div>
-
+    <link rel="stylesheet" type="text/css" href="indexpage.css">
 </head>
 <body>
 
@@ -20,19 +20,74 @@
             <div class="row">
                 <div class="col-lg-8 p-r-0 title-margin-right">
                     <div class="page-header">
-                        <div class="page-title">
-                            <h1>Hello, <span>username</span></h1>
-                        </div>
+
                     </div>
                 </div>
 
             </div>
             <!-- /# row -->
+
+            <div style="text-align: start">
+                <h2>&nbsp;&nbsp;&nbsp;&nbsp;Hello, <span th:text="${user.getName()}"></span></h2>
+            </div>
             <section id="main-content">
 
                 <div>
-                    :)
+                    <h2>Plan for today:</h2>
                 </div>
+                <br>
+
+
+
+
+
+
+                <div class="container py-7">
+                    <div class="row">
+                        <div class="col-lg-4 mb-3" id="Friday, Nov 13th">
+                            <h4 class="mt-0 mb-3 text-dark op-8 font-weight-bold">
+                                <span th:text="${currentDayOfWeek}"></span>
+                                <span>,&nbsp;&nbsp;</span>
+                                <span th:text="${currentMonth}"> </span>
+                                <span th:text="${currentDay}"></span>
+                                <br>
+                            </h4>
+
+
+
+
+                            <ul class="list-timeline list-timeline-primary">
+                                <th:block th:each="activity : ${todaysActivities}">
+                                    <li th:classappend="${activity.isActiveNow} ? 'list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column show' : 'list-timeline-item p-0 pb-3 pb-lg-4 d-flex flex-wrap flex-column'">
+                                        <p th:classappend="${activity.isActiveNow} ? 'my-0 text-dark flex-fw text-sm text-uppercase' : ''">
+                <span th:if="${activity.isActiveNow}"
+                      class="text-primary font-weight-bold op-8 infinite animated flash"
+                      data-animate="flash"
+                      data-animate-infinite="1"
+                      data-animate-duration="3.5"
+                      style="animation-duration: 3.5s;">Now</span>
+                                            <span th:unless="${activity.isActiveNow}">&nbsp;</span>
+
+                                            <span th:if="${activity.startDate.equals(activity.endDate)}">
+                      <span th:text="${activity.startTime} + ' - ' + ${activity.endTime} + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'"></span>
+                  </span>
+                                            - <strong  th:text="${activity.name}"></strong >
+                                        </p>
+                                    </li>
+                                    <br>
+                                </th:block>
+                            </ul>
+
+
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
 
             </section>
         </div>
