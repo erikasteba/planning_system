@@ -77,6 +77,7 @@ class UserControllerTest {
                 .andExpect(redirectedUrl("/index"));
     }
 
+
     @Test
     @WithMockUser(username = "nas@gmail.com", password = "12345678")
     public void testSuccessfulLRegistration() throws Exception {
