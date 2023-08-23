@@ -1,4 +1,4 @@
-package com.example.planning_system;
+package com.example.planning_system.controllers;
 
 import com.example.planning_system.controllers.ActivitiesController;
 import com.example.planning_system.models.Activities;

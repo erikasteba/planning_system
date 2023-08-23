@@ -1,4 +1,4 @@
-package com.example.planning_system;
+package com.example.planning_system.repositories;
 
 import com.example.planning_system.models.Activities;
 import com.example.planning_system.models.User;
