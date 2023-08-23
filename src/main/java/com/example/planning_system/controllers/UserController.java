@@ -44,7 +44,14 @@ public class UserController {
         String errorConfirmMessage = "";
         String errorEmailMessage = "";
         String errorPasMessage = "";
+        String errorNameMessage = "";
         boolean mistake = false;
+
+        if ( name.isEmpty() ){
+            errorNameMessage = "Name can not be empty";
+            model.addAttribute("errorNameMessage", errorNameMessage);
+            mistake = true;
+        }
 
 
         if ( (password.length() < 8)||(password.length() > 30) ){
@@ -53,11 +60,6 @@ public class UserController {
                 mistake = true;
         }
 
-        if (!userService.createUser(user)) {
-            errorConfirmMessage = "User with this email already exists";
-            model.addAttribute("errorConfirmMessage", errorConfirmMessage);
-            mistake = true;
-        }
 
         if (!email.contains("@")) {
             errorEmailMessage = "Email should contain @";
@@ -72,6 +74,15 @@ public class UserController {
         if(mistake){
             return "registration";
         }
+        if (!userService.createUser(user)) {
+            errorConfirmMessage = "User with this email already exists";
+            model.addAttribute("errorConfirmMessage", errorConfirmMessage);
+            mistake = true;
+        }
+        if(mistake){
+            return "registration";
+        }
+
         return "redirect:/user/login";
 
 
