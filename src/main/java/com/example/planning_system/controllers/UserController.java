@@ -35,12 +35,15 @@ public class UserController {
 
     @PostMapping("/user/registration")
     public String createUser(User user,
+                             @RequestParam String name,
                              @RequestParam String password,
                              @RequestParam String email,
+                             @RequestParam String confirmPassword,
                              Model model) {
         String errorMessage = "";
         String errorConfirmMessage = "";
         String errorEmailMessage = "";
+        String errorPasMessage = "";
         boolean mistake = false;
 
 
@@ -59,6 +62,11 @@ public class UserController {
         if (!email.contains("@")) {
             errorEmailMessage = "Email should contain @";
             model.addAttribute("errorEmailMessage", errorEmailMessage);
+            mistake = true;
+        }
+        if (!password.equals(confirmPassword)) {
+            errorPasMessage = "Passwords do not match";
+            model.addAttribute("errorPasMessage", errorPasMessage);
             mistake = true;
         }
         if(mistake){

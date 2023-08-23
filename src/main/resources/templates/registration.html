@@ -122,35 +122,24 @@
         <div class="form-group">
             <label for="password">Password (at least 8 - 30 symbols)</label>
             <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            <p class="error-message" id="password-error"></p>
-        </div>
-        <div class="form-group">
-            <label for="confirm-password">Confirm Password</label>
-            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
-            <p class="error-message" id="confirm-password-error"></p>
         </div>
         <div class="error-message" style="text-align: center;">
             <p th:text="${errorMessage}" style="color: red;"></p>
 
         </div>
+        <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm yourPassword" required>
+        </div>
+        <div class="error-message" style="text-align: center;">
+            <p th:text="${errorPasMessage}" style="color: red;"></p>
+
+        </div>
+
         <button class="btn" type="submit">Create</button>
     </form>
     <p class="login-link">Already a member? <a href="/user/login">Log in</a></p>
 </div>
-<script>
-    var password = document.getElementById("password");
 
-
-    var confirmPassword = document.getElementById("confirm-password");
-    function validatePassword(){
-        if(password.value != confirmPassword.value) {
-            confirmPassword.setCustomValidity("Passwords are incorrect");
-        }else{
-          confirmPassword.setCustomValidity('');
-        }
-    }
-    password.onchange = validatePassword;
-    confirmPassword.onkeyup = validatePassword;
-</script>
 </body>
 </html>
