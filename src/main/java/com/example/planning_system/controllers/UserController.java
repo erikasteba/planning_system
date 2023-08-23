@@ -59,12 +59,7 @@ public class UserController {
                 model.addAttribute("errorMessage", errorMessage);
                 mistake = true;
         }
-        //System.out.println(userService.createUser(user));
-        if (!userService.createUser(user)) {
-            errorConfirmMessage = "User with this email already exists";
-            model.addAttribute("errorConfirmMessage", errorConfirmMessage);
-            mistake = true;
-        }
+
 
         if (!email.contains("@")) {
             errorEmailMessage = "Email should contain @";
@@ -79,6 +74,15 @@ public class UserController {
         if(mistake){
             return "registration";
         }
+        if (!userService.createUser(user)) {
+            errorConfirmMessage = "User with this email already exists";
+            model.addAttribute("errorConfirmMessage", errorConfirmMessage);
+            mistake = true;
+        }
+        if(mistake){
+            return "registration";
+        }
+
         return "redirect:/user/login";
 
 
