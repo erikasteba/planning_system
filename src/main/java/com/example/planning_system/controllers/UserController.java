@@ -36,24 +36,32 @@ public class UserController {
     @PostMapping("/user/registration")
     public String createUser(User user,
                              @RequestParam String password,
+                             @RequestParam String email,
                              Model model) {
         String errorMessage = "";
+        String errorConfirmMessage = "";
+        String errorEmailMessage = "";
+        boolean mistake = false;
 
-        try {
 
-            if ( (password.length() < 8)||(password.length() > 30) ){
+        if ( (password.length() < 8)||(password.length() > 30) ){
                 errorMessage = "This password must be 8-30 symbols";
                 model.addAttribute("errorMessage", errorMessage);
-                return "registration";
-            }
-        } catch (DateTimeParseException e) {
-            errorMessage = "Invalid date and time format.";
-            model.addAttribute("errorMessage", errorMessage);
-            return "registration";
+                mistake = true;
         }
+
         if (!userService.createUser(user)) {
-            errorMessage = "User with this email already exists";
-            model.addAttribute("errorMessage", errorMessage);
+            errorConfirmMessage = "User with this email already exists";
+            model.addAttribute("errorConfirmMessage", errorConfirmMessage);
+            mistake = true;
+        }
+
+        if (!email.contains("@")) {
+            errorEmailMessage = "Email should contain @";
+            model.addAttribute("errorEmailMessage", errorEmailMessage);
+            mistake = true;
+        }
+        if(mistake){
             return "registration";
         }
         return "redirect:/user/login";
