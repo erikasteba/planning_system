@@ -44,7 +44,14 @@ public class UserController {
         String errorConfirmMessage = "";
         String errorEmailMessage = "";
         String errorPasMessage = "";
+        String errorNameMessage = "";
         boolean mistake = false;
+
+        if ( name.isEmpty() ){
+            errorNameMessage = "Name can not be empty";
+            model.addAttribute("errorNameMessage", errorNameMessage);
+            mistake = true;
+        }
 
 
         if ( (password.length() < 8)||(password.length() > 30) ){
@@ -52,7 +59,7 @@ public class UserController {
                 model.addAttribute("errorMessage", errorMessage);
                 mistake = true;
         }
-
+        //System.out.println(userService.createUser(user));
         if (!userService.createUser(user)) {
             errorConfirmMessage = "User with this email already exists";
             model.addAttribute("errorConfirmMessage", errorConfirmMessage);
