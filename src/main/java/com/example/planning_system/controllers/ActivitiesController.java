@@ -21,6 +21,8 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,11 +68,23 @@ public class ActivitiesController {
                 String offsetString = String.format("%s%d", hours >= 0 ? "+" : "", hours);
 
                 sortedTimeZones.add(timeZone + " " + offsetString);
-                allHours.add(hours);
+
             }}
+
+        for (String input: sortedTimeZones) {
+            String regex = "[-+]?\\b\\d+\\b";
+
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(input);
+
+            while (matcher.find()) {
+                String integerStr = matcher.group();
+                int integerValue = Integer.parseInt(integerStr);
+                allHours.add(integerValue);
+            }
+        }
         model.addAttribute("timeZoneOffsets", sortedTimeZones);
         model.addAttribute("allHours", allHours);
-
 
         return "day-details";
     }
