@@ -1,10 +1,14 @@
 package com.example.planning_system.controllers;
 
 import com.example.planning_system.models.Activities;
+import com.example.planning_system.models.Notes;
 import com.example.planning_system.models.User;
 import com.example.planning_system.repositories.ActivitiesRepository;
+import com.example.planning_system.repositories.NotesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,8 +26,17 @@ public class HomeController {
     @Autowired
     ActivitiesRepository activitiesRepository;
 
+    @Autowired
+    NotesRepository notesRepository;
+
     @GetMapping("/index")
-    public String home(Model model, @AuthenticationPrincipal User user){
+    public String home(Model model){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        Long userId = user.getId();
+        List<Notes> notes = notesRepository.findByUserId(userId);
+        model.addAttribute("notes", notes);
 
         LocalDate today = LocalDate.now();
         LocalTime currentTime = LocalTime.now();
