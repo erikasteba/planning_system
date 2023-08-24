@@ -52,7 +52,7 @@
                     <label for="receiverId">Receiver ID: </label>
                     <input type="text" id="receiverId" name="receiverId">
                     <br>
-                    <button type="submit">Send Friend Request</button>
+                    <button class="btn btn-primary" type="submit">Send Friend Request</button>
                 </form>
 
                 <br><br>
@@ -77,7 +77,7 @@
                                 <form th:action="@{/friendships/unfriend/{friendId}(friendId=${friend.getId()})}"
                                       method="post">
                                     <input type="hidden" name="friendId" th:value="${friend.getId()}"/>
-                                    <button type="submit">Unfriend</button>
+                                    <button class="btn btn-danger" type="submit">Unfriend</button>
                                 </form>
                             </td>
                         </tr>

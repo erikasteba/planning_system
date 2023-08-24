@@ -88,51 +88,51 @@ body{
 .list-timeline.list-timeline-primary .list-timeline-item.active:before,
 .list-timeline.list-timeline-primary .list-timeline-item.show:before,
 .list-timeline.list-timeline-primary:before {
-    background: #55A79A
+    background: #673bc4
 }
 
 .list-timeline.list-timeline-primary .list-timeline-item:before {
-    border-color: #55A79A
+    border-color: #673bc4
 }
 
 .list-timeline.list-timeline-primary-dark .list-timeline-item.active:before,
 .list-timeline.list-timeline-primary-dark .list-timeline-item.show:before,
 .list-timeline.list-timeline-primary-dark:before {
-    background: #33635c
+    background: #5634a2
 }
 
 .list-timeline.list-timeline-primary-dark .list-timeline-item:before {
-    border-color: #33635c
+    border-color: #673bc4
 }
 
 .list-timeline.list-timeline-primary-faded .list-timeline-item.active:before,
 .list-timeline.list-timeline-primary-faded .list-timeline-item.show:before,
 .list-timeline.list-timeline-primary-faded:before {
-    background: rgba(85, 167, 154, .3)
+    background: rgb(103, 59, 196)
 }
 
 .list-timeline.list-timeline-primary-faded .list-timeline-item:before {
-    border-color: rgba(85, 167, 154, .3)
+    border-color: rgb(103, 59, 196)
 }
 
 .list-timeline.list-timeline-info .list-timeline-item.active:before,
 .list-timeline.list-timeline-info .list-timeline-item.show:before,
 .list-timeline.list-timeline-info:before {
-    background: #17a2b8
+    background: #673bc4
 }
 
 .list-timeline.list-timeline-info .list-timeline-item:before {
-    border-color: #17a2b8
+    border-color: #673bc4
 }
 
 .list-timeline.list-timeline-success .list-timeline-item.active:before,
 .list-timeline.list-timeline-success .list-timeline-item.show:before,
 .list-timeline.list-timeline-success:before {
-    background: #28a745
+    background: #673bc4
 }
 
 .list-timeline.list-timeline-success .list-timeline-item:before {
-    border-color: #28a745
+    border-color: #673bc4
 }
 
 .list-timeline.list-timeline-warning .list-timeline-item.active:before,
@@ -198,11 +198,11 @@ body{
 .list-timeline.list-timeline-green .list-timeline-item.active:before,
 .list-timeline.list-timeline-green .list-timeline-item.show:before,
 .list-timeline.list-timeline-green:before {
-    background: #55A79A
+    background: #673bc4
 }
 
 .list-timeline.list-timeline-green .list-timeline-item:before {
-    border-color: #55A79A
+    border-color: #673bc4
 }
 
 .list-timeline.list-timeline-red .list-timeline-item.active:before,
@@ -218,11 +218,11 @@ body{
 .list-timeline.list-timeline-blue .list-timeline-item.active:before,
 .list-timeline.list-timeline-blue .list-timeline-item.show:before,
 .list-timeline.list-timeline-blue:before {
-    background: #00ADBB
+    background: #673bc4
 }
 
 .list-timeline.list-timeline-blue .list-timeline-item:before {
-    border-color: #00ADBB
+    border-color: #673bc4
 }
 
 .list-timeline.list-timeline-purple .list-timeline-item.active:before,
@@ -298,11 +298,11 @@ body{
 .list-timeline.list-timeline-cyan-dark .list-timeline-item.active:before,
 .list-timeline.list-timeline-cyan-dark .list-timeline-item.show:before,
 .list-timeline.list-timeline-cyan-dark:before {
-    background: #008b8b
+    background: #673bc4
 }
 
 .list-timeline.list-timeline-cyan-dark .list-timeline-item:before {
-    border-color: #008b8b
+    border-color: #673bc4
 }
 
 .list-timeline.list-timeline-yellow .list-timeline-item.active:before,
@@ -338,19 +338,19 @@ body{
 .list-timeline.list-timeline-teal .list-timeline-item.active:before,
 .list-timeline.list-timeline-teal .list-timeline-item.show:before,
 .list-timeline.list-timeline-teal:before {
-    background: teal
+    background: #673bc4
 }
 
 .list-timeline.list-timeline-teal .list-timeline-item:before {
-    border-color: teal
+    border-color: #673bc4
 }
 
 .list-timeline.list-timeline-green-bright .list-timeline-item.active:before,
 .list-timeline.list-timeline-green-bright .list-timeline-item.show:before,
 .list-timeline.list-timeline-green-bright:before {
-    background: #2ECC71
+    background: #673bc4
 }
 
 .list-timeline.list-timeline-green-bright .list-timeline-item:before {
-    border-color: #2ECC71
+    border-color: #673bc4
 }

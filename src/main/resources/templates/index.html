@@ -28,13 +28,10 @@
             </div>
             <!-- /# row -->
 
-            <div style="text-align: start">
-                <h2>&nbsp;&nbsp;&nbsp;&nbsp;Hello, <span th:text="${user.getName()}"></span></h2>
-            </div>
             <section id="main-content">
 
-                <div>
-                    <h2>Plan for today:</h2>
+                <div style="margin-top:-20px;">
+                    <h1>Plan for today:</h1>
                 </div>
                 <br>
 
@@ -88,22 +85,21 @@
 
 
                         <div class="col-lg-5 mb-3">
-                            <h4>Create Note</h4>
                             <form id="noteForm" action="/index/note" method="post">
                                 <textarea id="noteContent" name="content" placeholder="Note Content" required style="width: 350px; height: 50px;"></textarea><br>
-                                <button type="submit" id="createNoteBtn">Create Note</button>
+                                <button class="btn btn-primary" type="submit" id="createNoteBtn">Create Note</button>
                             </form>
                             <br><br>
                             <h4>Notes:</h4>
-                            <div style="background-color: white;">
+                            <div style="background-color: white;"><br>
                                 <ul th:each="note : ${notes}">
                                     <h6><li th:text="${note.content}"></li></h6>
                                     <br>
                                     <form id="noteDeleteForm" action="/index/note/delete" method="post">
                                         <input type="hidden" name="noteid" th:value="${note.id}">
-                                        <button type="submit" id="deleteNoteBtn">Delete</button>
+                                        <button type="submit" id="deleteNoteBtn" class="btn btn-danger btn-sm" style=" ">Delete</button>
                                     </form>
-                                    <hr align="right" style="border-top: 3px dotted green;">
+                                    <hr align="right" style="border-top: 3px dotted rebeccapurple;">
                                 </ul>
                             </div>
                         </div>
