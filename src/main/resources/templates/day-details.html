@@ -113,7 +113,7 @@
                         </script>
 
 
-                        <input type="submit" value="Create Activity">
+                        <button class="btn btn-primary"  type="submit" value="Create Activity">Create Activity</button>
                     </form>
                 </div>
                 <br>
@@ -170,13 +170,10 @@
                             <td th:if="${!activity.isPublic()}" th:text="Private" style="color: blue;"></td>
                             <td th:if="${activity.isPublic()}" th:text="Public" style="color: green;"></td>
                             <td>
-
-                                <a th:href="@{/calendar/activities/edit/{act_id}(act_id=${activity.id})}">Edit</a>
-
-
+                                <a  class="btn btn-warning" th:href="@{/calendar/activities/edit/{act_id}(act_id=${activity.id})}">Edit</a>
                                 <form th:action="@{/calendar/activities/delete/{act_id}(act_id=${activity.id})}"
                                       method="post">
-                                    <button type="submit">Delete</button>
+                                    <button class="btn btn-danger" type="submit">Delete</button>
                                 </form>
                             </td>
                         </tr>

@@ -47,7 +47,7 @@
                                                         <form th:action="@{/calendar-week-friends}" method="get">
                                                             <h2>Selected Week:</h2>
                                                             <input type="week" id="week" name="week">
-                                                            <button type="submit">Go</button>
+                                                            <button class="btn btn-primary" type="submit">Go</button>
                                                         </form>
 
 
@@ -63,10 +63,10 @@
                                         <div style="text-align: center;">
                                             <a style="margin-right: 10px;"
                                                th:href="@{/btnPreviousWeekFriend(week=${selectedWeek})}">
-                                                <button><</button>
+                                                <button class="btn btn-primary"><</button>
                                             </a><a style="margin-left: 10px;"
                                                    th:href="@{/btnNextWeekFriend(week=${selectedWeek})}">
-                                            <button>></button>
+                                            <button class="btn btn-primary">></button>
                                         </a>
                                         </div>
 
