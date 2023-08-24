@@ -19,41 +19,42 @@
     <link rel="stylesheet" type="text/css" th:href="@{/style.css}">
     <link rel="stylesheet" type="text/css" th:href="@{/week.css}">
     <style>
-        form {
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
-        input[type="text"],
-        input[type="password"] {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 100%;
-            margin-bottom: 5px;
-        }
-        button[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            padding: 5px 10px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-        .update-message {
-            color: red;
-            font-size: 14px;
-            margin-top: 5px;
-        }
         .profile-section h2 {
-            margin-top: 20px;
             margin-bottom: 15px;
         }
-        .update-section h3 {
-            color: #0b4402;
+        .main {
+            width: fit-content;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container-fluid {
+            width: 100%;
+        }
+        .edit-profile-link {
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s ease, transform 0.3s ease;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .edit-profile-link:hover {
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            color: #ffcc00;
+            transform: scale(1.05);
+        }
+        .profile-section {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            margin-top: 20px;
+            background-color: #f8f8f8;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
     </style>
 </head>
@@ -65,40 +66,13 @@
     <div class="main">
         <div class="container-fluid">
             <section class="profile-section">
-                <h2>Your Profile information:</h2>
+                <h2>Your Profile Information:</h2>
                 <p>Name: <span th:text="${user.name}"></span></p>
                 <p>Username: <span th:text="${user.username}"></span></p>
                 <p>Email: <span th:text="${user.email}"></span></p>
             </section>
-            <section class="update-section">
-                <h3>Update Name:</h3>
-                <p th:if="${updateNameMessage}" th:text="${updateNameMessage}" class="update-message"></p>
-                <form action="/user/update-name" method="post">
-                    <input type="text" name="newName" placeholder="New Name">
-                    <button type="submit">Update Name</button>
-                </form>
-
-                <h3>Update Username:</h3>
-                <p th:if="${updateUsernameMessage}" th:text="${updateUsernameMessage}" class="update-message"></p>
-                <form action="/user/update-username" method="post">
-                    <input type="text" name="newUsername" placeholder="New Username">
-                    <button type="submit">Update Username</button>
-                </form>
-
-                <h3>Update Email:</h3>
-                <p th:if="${updateEmailMessage}" th:text="${updateEmailMessage}" class="update-message"></p>
-                <form action="/user/update-email" method="post">
-                    <input type="text" name="newEmail" placeholder="New Email">
-                    <button type="submit">Update Email</button>
-                </form>
-
-                <h3>Update Password:</h3>
-                <p th:if="${updatePasswordMessage}" th:text="${updatePasswordMessage}" class="update-message"></p>
-                <form action="/user/update-password" method="post">
-                    <input type="password" name="newPassword" placeholder="New Password">
-                    <input type="password" name="confirmPassword" placeholder="Confirm Password">
-                    <button type="submit">Update Password</button>
-                </form>
+            <section class="edit-section">
+                <a th:href="@{/user/edit-profile}" class="edit-profile-link">Edit Profile</a>
             </section>
         </div>
     </div>
