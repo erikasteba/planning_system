@@ -67,7 +67,7 @@ class ProfileControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeExists("updateUsernameMessage"))
                 .andExpect(flash().attribute("updateUsernameMessage", "Username cannot be empty."))
-                .andExpect(redirectedUrl("/user/profile"));
+                .andExpect(redirectedUrl("/user/edit-profile"));
     }
     @Test
     public void testUpdateUsername_Success() throws Exception {
@@ -105,7 +105,7 @@ class ProfileControllerTest {
                         .param("newName", "New Name"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeExists("updateNameMessage"))
-                .andExpect(redirectedUrl("/user/profile"));
+                .andExpect(redirectedUrl("/user/edit-profile"));
     }
     @Test
     @WithMockUser(username = "testUser", password = "testPassword")
@@ -115,7 +115,7 @@ class ProfileControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeExists("updateNameMessage"))
                 .andExpect(flash().attribute("updateNameMessage", "Name cannot be empty."))
-                .andExpect(redirectedUrl("/user/profile"));
+                .andExpect(redirectedUrl("/user/edit-profile"));
     }
     @Test
     public void testUpdateName_Success() throws Exception {
@@ -151,7 +151,7 @@ class ProfileControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeExists("updateEmailMessage"))
                 .andExpect(flash().attribute("updateEmailMessage", "Email cannot be empty."))
-                .andExpect(redirectedUrl("/user/profile"));
+                .andExpect(redirectedUrl("/user/edit-profile"));
     }
     @Test
     public void testUpdateEmail_Success() throws Exception {
@@ -176,6 +176,16 @@ class ProfileControllerTest {
         verify(userService, never()).updateUser(currentUser);
         assertEquals("Email is already in use.", redirectAttributes.getFlashAttributes().get("updateEmailMessage"));
     }
+    @Test
+    @WithMockUser(username = "testuser", password = "password", roles = "USER")
+    public void testUpdateEmail_EmailInvalidFormat() throws Exception {
+        mockMvc.perform(post("/user/update-email")
+                        .param("newEmail", "invalid-email-format"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(flash().attributeExists("updateEmailMessage"))
+                .andExpect(flash().attribute("updateEmailMessage", "Invalid email format."))
+                .andExpect(redirectedUrl("/user/edit-profile"));
+    }
 
 // Password tests
     @Test
@@ -187,7 +197,7 @@ class ProfileControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeExists("updatePasswordMessage"))
                 .andExpect(flash().attribute("updatePasswordMessage", "Password must be at least 8 characters long."))
-                .andExpect(redirectedUrl("/user/profile"));
+                .andExpect(redirectedUrl("/user/edit-profile"));
     }
     @Test
     @WithMockUser(username = "testUser", password = "testPassword")
@@ -198,7 +208,7 @@ class ProfileControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(flash().attributeExists("updatePasswordMessage"))
                 .andExpect(flash().attribute("updatePasswordMessage", "Password and confirmation do not match."))
-                .andExpect(redirectedUrl("/user/profile"));
+                .andExpect(redirectedUrl("/user/edit-profile"));
     }
     @Test
     @WithMockUser(username = "testUser", password = "testPassword")
