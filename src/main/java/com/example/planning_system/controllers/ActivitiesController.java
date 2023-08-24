@@ -4,6 +4,7 @@ import com.example.planning_system.models.Activities;
 import com.example.planning_system.models.User;
 import com.example.planning_system.repositories.ActivitiesRepository;
 import com.example.planning_system.repositories.UserRepository;
+import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -23,6 +24,8 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Optional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @Controller
@@ -35,18 +38,21 @@ public class ActivitiesController {
 
     String errorMessage = "";
 
+    private static final Logger logger = LoggerFactory.getLogger(ActivitiesController.class);
+
+
     @GetMapping("/calendar/activities")
     public String showActivityForm(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
         Long userId = user.getId();
-
+        String userName = user.getName();
 
         List<Activities> activities = activitiesRepository.findByUserId(userId);
         model.addAttribute("activities", activities);
         model.addAttribute("errorMessage", errorMessage);
-        System.out.println(activities);
-        System.out.println("test");
+
+        logger.info("Displaying activities for user with ID: {} and username {}", userId, userName);
 
         return "day-details";
     }
@@ -76,11 +82,13 @@ public class ActivitiesController {
                 if (startDateTime.isAfter(endDateTime)) {
                     errorMessage = "Please choose correct dates or time.";
                     model.addAttribute("errorMessage", errorMessage);
+                    logger.warn("Failed to add activity for userId: {} with error: {}", userId, errorMessage);
                     return "redirect:/calendar/activities";
                 }
             } catch (DateTimeParseException e) {
                 errorMessage = "Invalid date and time format.";
                 model.addAttribute("errorMessage", errorMessage);
+                logger.warn("Failed to add activity for userId: {} with error: {}", userId, errorMessage);
                 return "day-details";
             }
 
@@ -88,9 +96,8 @@ public class ActivitiesController {
         }
 
         Activities activity = new Activities(activity_name, startDateTime.toString(), endDateTime.toString(), is_public);
-
         activitiesRepository.save(activity);
-        //System.out.println("dasdaddada" + userId);
+
         User userEntity = userRepository.findById(userId).orElse(null);
         if (userEntity != null) {
             activity.setUser(userEntity);
@@ -101,16 +108,29 @@ public class ActivitiesController {
             return "redirect:/calendar/activities";
         }
         errorMessage=" ";
+        logger.info("New activity added for userId: {}", userId);
+        logger.info("Parametrs: name: {}, start-time: {}, end-time: {}, is-public: {}", activity_name, start_time, end_time, is_public);
+
         return "redirect:/calendar/activities";
     }
 
 
     @PostMapping("/calendar/activities/delete/{act_id}")
     public String deleteActivity(@PathVariable("act_id") Long act_id) {
+
+        try {
         Optional<Activities> activities = activitiesRepository.findById(act_id);
+
         if (activities.isPresent()) {
-            activitiesRepository.delete(activities.get());
-        }
+            Activities activity = activities.get();
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = (User) authentication.getPrincipal();
+            Long userId = user.getId();
+            if (activity.getUser().getId().equals(userId)) {
+                logger.info("Activity with id {} deleted by user with id: {}", act_id, userId);
+                activitiesRepository.delete(activity);
+            }
+        }} catch (Exception e) {e.printStackTrace();}
         return "redirect:/calendar/activities";
     }
 
@@ -155,6 +175,10 @@ public class ActivitiesController {
                                @RequestParam String end_time,
                                @RequestParam(name = "isPublic", defaultValue = "false") boolean isPublic) {
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        Long userId = user.getId();
+
         Optional<Activities> activities = activitiesRepository.findById(act_id);
         Activities activity = activities.get();
         model.addAttribute("act_id", act_id);
@@ -194,6 +218,9 @@ public class ActivitiesController {
         activity.setPublic(isPublic);
         errorMessage = " ";
         activitiesRepository.save(activity);
+
+        logger.info("Activity with id {} edited by user with id: {}", act_id, userId);
+        logger.info("Parametrs: name: {}, start-time: {}, end-time: {}, is-public: {}", activity_name, start_time, end_time, isPublic);
 
         return "redirect:/calendar/activities";
     }

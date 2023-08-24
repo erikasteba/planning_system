@@ -3,6 +3,8 @@ package com.example.planning_system.controllers;
 import com.example.planning_system.models.User;
 import com.example.planning_system.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +20,9 @@ import java.time.format.DateTimeParseException;
 @Controller
 @RequiredArgsConstructor
 public class UserController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ActivitiesController.class);
+
     private final UserService userService;
     @GetMapping("/user/login")
     public String login(){
@@ -83,8 +88,8 @@ public class UserController {
             return "registration";
         }
 
+        logger.info("New user registred with name: {} and email {}", name, email);
         return "redirect:/user/login";
-
 
     }
 

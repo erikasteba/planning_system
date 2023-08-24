@@ -7,6 +7,8 @@ import com.example.planning_system.repositories.ActivitiesRepository;
 import com.example.planning_system.models.User;
 import com.example.planning_system.service.ActivityService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
@@ -31,6 +33,8 @@ import static com.example.planning_system.service.WeekService.generateDateTimeLi
 public class MainController {
     private final CalendarService calendarService;
     private final ActivityService activityService;
+    private static final Logger logger = LoggerFactory.getLogger(ActivitiesController.class);
+
 
     @Autowired
     private ActivitiesRepository activitiesRepository;
@@ -48,14 +52,12 @@ public class MainController {
         model.addAttribute("weeks", weeks);
         model.addAttribute("selectedMonth", month);
 
-        // Get the current authenticated user (if available)
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.getPrincipal() instanceof User) {
             User user = (User) authentication.getPrincipal();
+            logger.info("Month calendar displayed for user with id: {}", user.getId());
             List<LocalDate> activityDates = activityService.getActivitiesDatesForUser(user);
-            for (LocalDate s : activityDates) {
-                System.out.println(s.toString());
-            }
+            logger.info("Activity dates: {}", activityDates);
             model.addAttribute("activityDates", activityDates);
         }
 
@@ -87,10 +89,9 @@ public class MainController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
         Long userId = user.getId();
-
+        logger.info("Week calendar displayed for user with id: {}", user.getId());
         List<Activities> activities = activitiesRepository.findByUserId(userId);
-
-        System.out.println(activities);
+        logger.info("Activities dates: {}", activities);
 
         List<List<LocalDateTime>> dateTimeLists = new ArrayList<>();
 
@@ -106,15 +107,15 @@ public class MainController {
         model.addAttribute("dateTimeLists", dateTimeLists);
         model.addAttribute("activities", activities);
 
-        for (int i = 0; i < activities.size(); i++) {
-            Activities activity = activities.get(i);
-            List<LocalDateTime> dateTimeList = dateTimeLists.get(i);
-            System.out.println("Activity: " + activity.getName());
-            for (LocalDateTime dateTime : dateTimeList) {
-                System.out.println(dateTime);
-            }
-            System.out.println();
-        }
+       //for (int i = 0; i < activities.size(); i++) {
+       //    Activities activity = activities.get(i);
+       //    List<LocalDateTime> dateTimeList = dateTimeLists.get(i);
+       //    System.out.println("Activity: " + activity.getName());
+       //    for (LocalDateTime dateTime : dateTimeList) {
+       //        System.out.println(dateTime);
+       //    }
+       //    System.out.println();
+       //}
         return "calendar-week";
     }
 

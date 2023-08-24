@@ -8,6 +8,8 @@ import com.example.planning_system.repositories.UserRepository;
 import com.example.planning_system.service.FriendshipService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,7 @@ import java.util.*;
 @RequestMapping("/friendships")
 @RequiredArgsConstructor
 public class FriendshipController {
+    private static final Logger logger = LoggerFactory.getLogger(ActivitiesController.class);
 
     private final FriendshipService friendshipService;
 
@@ -61,8 +64,8 @@ public class FriendshipController {
         Long userId = user.getId();
         model.addAttribute("userId", userId);
 
-        System.out.println("!");
         friendshipService.sendFriendRequest(senderId, receiverId);
+        logger.info("Friend request sent from: {} to: {}", senderId, receiverId);
         return "redirect:/friendships/";
     }
 
@@ -70,6 +73,7 @@ public class FriendshipController {
     public String acceptFriendRequest(@RequestParam Long senderId,
                                       @RequestParam Long receiverId) {
         friendshipService.acceptFriendRequest(senderId, receiverId);
+        logger.info("Friend request accepted by: {} with: {}", receiverId, senderId);
         return "friendship";
     }
 
@@ -77,15 +81,13 @@ public class FriendshipController {
     public String declineFriendRequest(@RequestParam Long senderId,
                                        @RequestParam Long receiverId) {
         friendshipService.declineFriendRequest(senderId, receiverId);
+        logger.info("Friend request declined by: {} with: {}", receiverId, senderId);
         return "friendship";
     }
 
     @GetMapping("/list")
     public String listFriends(@RequestParam Long userId) {
         List<User> friends = friendshipService.listFriends(userId);
-        for (User friend : friends) {
-            System.out.println(friend.getName());
-        }
         return "friendship";
     }
 
@@ -98,6 +100,7 @@ public class FriendshipController {
 
         Long friendshipId = friendshipRepository.findIdByUser1AndUser2(user, friendUser.get());
         friendshipRepository.deleteById(friendshipId);
+        logger.info("Friendship object deleted, id: {} by userId: {} (with userId: {})", friendshipId, user.getId(), friendId);
 
         return "redirect:/friendships/";
 

@@ -3,6 +3,8 @@ package com.example.planning_system.controllers;
 import com.example.planning_system.models.User;
 import com.example.planning_system.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class ProfileController {
     private final PasswordEncoder passwordEncoder;
     private final UserService userService;
+    private static final Logger logger = LoggerFactory.getLogger(ActivitiesController.class);
+
 
     @GetMapping("/profile")
     public String userProfile(@AuthenticationPrincipal User currentUser, Model model) {
@@ -29,14 +33,18 @@ public class ProfileController {
     public String updateUsername(@AuthenticationPrincipal User currentUser, String newUsername, RedirectAttributes redirectAttributes) {
         if (newUsername == null || newUsername.trim().isEmpty()) {
             redirectAttributes.addFlashAttribute("updateUsernameMessage", "Username cannot be empty.");
+            logger.warn("Failed to update username for userId: {} and name {}. Error: {}", currentUser.getId(), currentUser.getName(), "Username cannot be empty.");
             return "redirect:/user/profile";
         }
         if (userService.existsByUsername(newUsername)) {
             redirectAttributes.addFlashAttribute("updateUsernameMessage", "Username is already taken.");
+            logger.warn("Failed to update username for userId: {} and name {}. Error: {}", currentUser.getId(), currentUser.getName(), "Username is already taken.");
             return "redirect:/user/profile";
         }
+        String prevUsername = currentUser.getUsername();
         currentUser.setUsername(newUsername);
         userService.updateUser(currentUser);
+        logger.info("Updated username for userId: {}. Previous value: {}. New value: {}", currentUser.getId(), prevUsername, newUsername);
         redirectAttributes.addFlashAttribute("updateUsernameMessage", "Username updated successfully.");
         return "redirect:/user/profile";
     }
@@ -46,8 +54,10 @@ public class ProfileController {
             redirectAttributes.addFlashAttribute("updateNameMessage", "Name cannot be empty.");
             return "redirect:/user/profile";
         }
+        String prevName = currentUser.getName();
         currentUser.setName(newName);
         userService.updateUser(currentUser);
+        logger.info("Updated name for userId: {}. Previous value: {}. New value: {}", currentUser.getId(), prevName, newName);
         redirectAttributes.addFlashAttribute("updateNameMessage", "Name updated successfully.");
         return "redirect:/user/profile";
     }
@@ -62,8 +72,10 @@ public class ProfileController {
             redirectAttributes.addFlashAttribute("updateEmailMessage", "Email is already in use.");
             return "redirect:/user/profile";
         }
+        String prevEmail = currentUser.getName();
         currentUser.setEmail(newEmail);
         userService.updateUser(currentUser);
+        logger.info("Updated email for userId: {}. Previous value: {}. New value: {}", currentUser.getId(), prevEmail, newEmail);
         redirectAttributes.addFlashAttribute("updateEmailMessage", "Email updated successfully.");
         return "redirect:/user/profile";
     }
@@ -81,6 +93,7 @@ public class ProfileController {
         String encodedPassword = passwordEncoder.encode(newPassword);
         currentUser.setPassword(encodedPassword);
         userService.updateUser(currentUser);
+        logger.info("Updated password for userId: {}", currentUser.getId());
         redirectAttributes.addFlashAttribute("updatePasswordMessage", "Password updated successfully.");
         return "redirect:/user/profile";
     }
