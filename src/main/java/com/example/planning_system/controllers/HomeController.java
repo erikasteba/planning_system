@@ -12,14 +12,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Comparator;
+import java.time.*;
+import java.util.*;
+
 @Controller
 public class HomeController {
 
@@ -47,8 +45,6 @@ public class HomeController {
         String currentMonth = months.get(currentMonthIndex);
         int currentDay = today.getDayOfMonth();
 
-
-
         LocalDateTime currentDateTime = LocalDateTime.now();
 
         List<Activities> todaysActivities = activitiesRepository.findByUserAndStartDateEquals(user, today);
@@ -69,7 +65,33 @@ public class HomeController {
         model.addAttribute("todaysActivities", todaysActivities);
         model.addAttribute("user", user);
 
+
+
+
+
+
+
+        //LISTS CITIES WITH TIME ZONES.   (EXAMPLE: EUROPE/RIGA +3)
+        //In index.html
+        Set<String> allTimeZones = ZoneId.getAvailableZoneIds();
+        TreeSet<String> sortedTimeZones = new TreeSet<>();
+        for (String timeZone : allTimeZones) {
+            if (timeZone.startsWith("Europe/") || timeZone.startsWith("Asia/") ||
+                    timeZone.startsWith("Africa/") || timeZone.startsWith("America/") ||
+                    timeZone.startsWith("Australia/")) {
+                ZoneOffset offset = ZoneId.of(timeZone).getRules().getOffset(java.time.Instant.now());
+                int hours = offset.getTotalSeconds() / 3600;
+                String offsetString = String.format("%s%d", hours >= 0 ? "+" : "", hours);
+
+                sortedTimeZones.add(timeZone + " " + offsetString);
+            }}
+        model.addAttribute("timeZoneOffsets", sortedTimeZones);
+
+
+
         return "index";
     }
+
+
 
 }
