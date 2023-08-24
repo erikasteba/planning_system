@@ -26,7 +26,7 @@ public class SecurityConfig{
         //add websites
         return http
                 .authorizeHttpRequests(requests -> requests
-                .requestMatchers("/user/*")
+                .requestMatchers("/user/login", "/user/registration")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
