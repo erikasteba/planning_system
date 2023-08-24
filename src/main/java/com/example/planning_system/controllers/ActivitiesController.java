@@ -17,13 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +51,26 @@ public class ActivitiesController {
         model.addAttribute("errorMessage", errorMessage);
 
         logger.info("Displaying activities for user with ID: {} and username {}", userId, userName);
+
+        //LISTS CITIES WITH TIME ZONES.   (EXAMPLE: EUROPE/RIGA +3)
+        //In index.html
+        Set<String> allTimeZones = ZoneId.getAvailableZoneIds();
+        List<Integer> allHours = new ArrayList<>();
+        TreeSet<String> sortedTimeZones = new TreeSet<>();
+        for (String timeZone : allTimeZones) {
+            if (timeZone.startsWith("Europe/") || timeZone.startsWith("Asia/") ||
+                    timeZone.startsWith("Africa/") || timeZone.startsWith("America/") ||
+                    timeZone.startsWith("Australia/")) {
+                ZoneOffset offset = ZoneId.of(timeZone).getRules().getOffset(java.time.Instant.now());
+                int hours = offset.getTotalSeconds() / 3600;
+                String offsetString = String.format("%s%d", hours >= 0 ? "+" : "", hours);
+
+                sortedTimeZones.add(timeZone + " " + offsetString);
+                allHours.add(hours);
+            }}
+        model.addAttribute("timeZoneOffsets", sortedTimeZones);
+        model.addAttribute("allHours", allHours);
+
 
         return "day-details";
     }

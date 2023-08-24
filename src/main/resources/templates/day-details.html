@@ -131,19 +131,20 @@
                 <div style="">
                     <h6 >Download file with your activities <br>and import them to your Google Calendar!</h6><br>
                     <form action="/generate-ical" method="post" id="downloadForm">
-                        <label for="timeZoneOffset">Select your time zone offset:</label>
-                        <input type="number" id="timeZoneOffset" name="timeZoneOffset" min="-12" max="12" step="1" value="0">
+                        <label for="timeZoneOffsetSelect">Select your time zone offset:</label>
+                        <select id="timeZoneOffsetSelect" name="selectedTimeZoneOffset" onchange="extractHour(this)">
+                            <option th:each="offset, i: ${timeZoneOffsets}" th:value="${allHours[i.index]}" th:text="${offset}"></option>
+                        </select>
                         <button type="submit">Download iCalendar</button>
                     </form>
 
                     <script>
                         document.getElementById("downloadForm").addEventListener("submit", function(event) {
                             event.preventDefault();
-                            const timeZoneOffset = document.getElementById("timeZoneOffset").value;
+                            const timeZoneOffset = document.getElementById("timeZoneOffsetSelect").value;
                             const url = "/generate-ical?timeZoneOffset=" + encodeURIComponent(timeZoneOffset);
                             window.location.href = url;
                         });
-
                     </script>
                 </div>
 
