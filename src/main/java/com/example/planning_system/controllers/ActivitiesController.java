@@ -106,7 +106,6 @@ public class ActivitiesController {
             User user = (User) authentication.getPrincipal();
             userId = user.getId();
 
-
             try {
                 startDateTime = LocalDateTime.parse(start_time);
                 endDateTime = LocalDateTime.parse(end_time);

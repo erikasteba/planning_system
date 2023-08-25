@@ -23,8 +23,10 @@ import com.example.planning_system.service.CalendarService;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.planning_system.service.WeekService.generateDateTimeList;
 
@@ -45,7 +47,13 @@ public class MainController {
     }
 
     @GetMapping("/calendar")
-    public String showCalendar(@RequestParam(name = "month", defaultValue = "1") int month, Model model) {
+    public String showCalendar(@RequestParam(name = "month", required = false) Integer month, Model model) {
+
+        int defaultMonth = LocalDate.now().getMonthValue();
+        if (month == null) {
+            month = defaultMonth;
+        }
+
         int year = LocalDate.now().getYear();
         List<List<LocalDate>> weeks = calendarService.generateCalendarData(year, month);
         model.addAttribute("header", calendarService.getMonthName(month) + " " + year);
@@ -66,9 +74,15 @@ public class MainController {
 
 
     @GetMapping("/calendar-week")
-    public String showCalendarWeek(
-            @RequestParam(name = "week", required = false, defaultValue = "2023-W33") String week,
+    public String showCalendarWeek(//, defaultValue = "2023-W33"
+            @RequestParam(name = "week", required = false) String week,
             Model model) {
+
+        String defaultweek = String.valueOf(LocalDate.now().getYear()) + "-W" + String.valueOf(LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()));
+        if (week == null || week.isEmpty()) {
+            week = defaultweek;
+        }
+
         model.addAttribute("selectedWeek", week);
         String[] weekParts = week.split("-W");
         int year = Integer.parseInt(weekParts[0]);
@@ -120,8 +134,14 @@ public class MainController {
     }
 
     @GetMapping("/btnNextWeek")
-    public RedirectView btnNextWeek(
-            @RequestParam(name = "week", defaultValue = "2023-W33") String week) {
+    public RedirectView btnNextWeek(//, defaultValue = "2023-W33"
+            @RequestParam(name = "week") String week) {
+
+        String defaultweek = String.valueOf(LocalDate.now().getYear()) + "-W" + String.valueOf(LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()));
+        if (week == null || week.isEmpty()) {
+            week = defaultweek;
+        }
+
 
         String[] weekParts = week.split("-W");
         int year = Integer.parseInt(weekParts[0]);
@@ -139,8 +159,14 @@ public class MainController {
 
 
     @GetMapping("/btnPreviousWeek")
-    public RedirectView btnPreviousWeek(
-            @RequestParam(name = "week", defaultValue = "2023-W33") String week) {
+    public RedirectView btnPreviousWeek(//, defaultValue = "2023-W33"
+            @RequestParam(name = "week") String week) {
+
+        String defaultweek = String.valueOf(LocalDate.now().getYear()) + "-W" + String.valueOf(LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()));
+        if (week == null || week.isEmpty()) {
+            week = defaultweek;
+        }
+
 
         String[] weekParts = week.split("-W");
         int year = Integer.parseInt(weekParts[0]);

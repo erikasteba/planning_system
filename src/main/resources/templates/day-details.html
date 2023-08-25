@@ -129,13 +129,13 @@
                 <!-- THIS FORM HELPS TO PUT CORRECT TIME-ZONE IN .ISC CALENDAR  -->
                 <!-- JUST INPUT INTEGER AS TIME ZONE-->
                 <div style="">
-                    <h6 >Download file with your activities <br>and import them to your Google Calendar!</h6><br>
+                    <h6 >Download file with your activities and import<br> them to your Google or Windows Calendar!</h6><br>
                     <form action="/generate-ical" method="post" id="downloadForm">
-                        <label for="timeZoneOffsetSelect">Select your time zone offset:</label>
+                        <label for="timeZoneOffsetSelect">Select your time zone:</label>
                         <select id="timeZoneOffsetSelect" name="selectedTimeZoneOffset" onchange="extractHour(this)">
                             <option th:each="offset, i: ${timeZoneOffsets}" th:value="${allHours[i.index]}" th:text="${offset}"></option>
                         </select>
-                        <button type="submit">Download iCalendar</button>
+                        <button type="submit">Download</button>
                     </form>
 
                     <script>

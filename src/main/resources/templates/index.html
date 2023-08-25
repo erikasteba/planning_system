@@ -84,6 +84,8 @@
                         </div>
 
 
+
+
                         <div class="col-lg-5 mb-3">
                             <form id="noteForm" action="/index/note" method="post">
                                 <textarea id="noteContent" name="content" placeholder="Note Content" required style="width: 350px; height: 50px;"></textarea><br>
@@ -108,26 +110,6 @@
 
                     </div>
                 </div>
-
-
-
-
-
-
-                <!-- THIS FORM DOES NOT WORK, BUT IT LISTS CITIES WITH TIME ZONES -->
-                <!-- EXAMPLE: EUROPE/RIGA +3 -->
-                <h1>Select Time Zone Offset</h1>
-                <form action="#" method="post">
-                    <label for="timeZoneOffsetSelect">Select Time Zone:</label>
-                    <select id="timeZoneOffsetSelect" name="selectedTimeZoneOffset" onchange="extractHour(this)">
-                        <option th:each="offset : ${timeZoneOffsets}" th:value="${offset}" th:text="${offset}"></option>
-                    </select>
-                    <input type="hidden" name="selectedHour" id="selectedHourInput">
-                    <button type="submit">Submit</button>
-                </form>
-
-
-
 
 
 
