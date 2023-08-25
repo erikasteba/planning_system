@@ -36,6 +36,10 @@ public class Activities {
 
     private LocalDate endDate;
 
+    private Double latitude;
+    private Double longitude;
+
+
     public boolean isPublic() {
         return isPublic;
     }
@@ -66,5 +70,18 @@ public class Activities {
         this.endTime = end.toLocalTime();
         this.endDate = end.toLocalDate();
         this.isPublic = isPublic;
+    }
+
+    public Activities(String name, String startTime, String endTime, boolean isPublic, Double latitude, Double longitude) {
+        LocalDateTime start = LocalDateTime.parse(startTime);
+        LocalDateTime end = LocalDateTime.parse(endTime);
+        this.name = name;
+        this.startTime = start.toLocalTime();
+        this.startDate = start.toLocalDate();
+        this.endTime = end.toLocalTime();
+        this.endDate = end.toLocalDate();
+        this.isPublic = isPublic;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 }

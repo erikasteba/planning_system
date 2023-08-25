@@ -205,7 +205,8 @@ public class ActivitiesController {
                                @RequestParam String activity_name,
                                @RequestParam String start_time,
                                @RequestParam String end_time,
-                               @RequestParam(name = "isPublic", defaultValue = "false") boolean isPublic) {
+                               @RequestParam(name = "isPublic", defaultValue = "false") boolean isPublic,
+                               @RequestParam String coordinates) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
@@ -242,6 +243,15 @@ public class ActivitiesController {
             return "redirect:"+urlAgain;
         }
 
+        String[] parts = coordinates.split(", ");
+        if (parts.length != 2) {
+            // Handle incorrect input
+        }
+        Double latitude = Double.parseDouble(parts[0]);
+        Double longitude = Double.parseDouble(parts[1]);
+
+        activity.setLatitude(latitude);
+        activity.setLongitude(longitude);
         activity.setName(activity_name);
         activity.setStartTime(startTime);
         activity.setStartDate(startDate);

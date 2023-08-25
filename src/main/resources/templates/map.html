@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">>
+<head>
+  <title>Leaflet Map Example</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <div th:insert="blocks/css-links :: css"></div>
+</head>
+<body>
+<div th:replace="blocks/sidemenu"></div>
+<div th:replace="blocks/header"></div>
+<div class="content-wrap">
+<!--  map-->
+  <div class="main">
+    <div id="address"></div>
+    <div id="map" style="height: 500px;"></div>
+  </div>
+<!--map-->
+  <div class="margin-10px-top margin-10px-bottom">
+    <ul style="display: flex;
+               list-style-type: none;
+               padding: 0;">
+      <li>
+        <span style="margin-right: 10px;" class="bg-marker padding-5px-tb padding-15px-lr border-radius-5 margin-right-5px text-white font-size16 xs-font-size13">Me</span>
+      </li>
+      <li th:each="friend, i : ${friends}">
+        <span style="margin-right: 5px;"
+          th:text="${friend.getName()}"
+              th:class="${i.index == 0 ? 'bg-yellow' :
+              i.index == 1 ? 'bg-green' :
+              i.index == 2 ? 'bg-orange' :
+              'bg-lightred'} + ' padding-5px-tb padding-15px-lr margin-right-5px  border-radius-5 text-white font-size16 xs-font-size13'">
+        </span>
+      </li>
+    </ul>
+  </div>
+<script th:inline="javascript">
+  var map = L.map('map').setView([56.9496, 24.1052], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+  }).addTo(map);
+
+  map.on('click', function(e) {
+      var latlng = e.latlng;
+
+      // Use the Nominatim API for reverse geocoding
+      fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latlng.lat}&lon=${latlng.lng}`)
+          .then(response => response.json())
+          .then(data => {
+              if (data.display_name) {
+                  document.getElementById('address').innerHTML = `Address: ${data.display_name}`;
+              } else {
+                  document.getElementById('address').innerHTML = 'Address not found';
+              }
+          })
+          .catch(error => {
+              console.error('Error fetching address:', error);
+          });
+  });
+
+  var activitiesData = /*[[${activities}]]*/;
+  var FriendsActivitiesData = /*[[${AllFriendsActivities}]]*/;
+
+  activitiesData.forEach(function(activity) {
+    if (activity.latitude !== null && activity.longitude !== null) {
+        L.marker([activity.latitude, activity.longitude])
+            .addTo(map)
+            .bindPopup("<b>" + activity.name + "</b><br>" + activity.startTime);
+    }
+  });
+  var colors = ["gold", "green", "orange", "red"]
+  FriendsActivitiesData.forEach(function(friendActivities, friendIndex) {
+    var greenIcon = L.icon({
+    iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-' + colors[friendIndex] + '.png',
+
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+});
+
+
+    friendActivities.forEach(function(activity) {
+        if (activity.latitude !== null && activity.longitude !== null) {
+            L.marker([activity.latitude, activity.longitude], {icon: greenIcon})
+                .addTo(map)
+                .bindPopup("<b>" + activity.name + "</b><br>" + activity.startTime);
+        }
+    });
+});
+
+</script>
+</body>
+</html>
