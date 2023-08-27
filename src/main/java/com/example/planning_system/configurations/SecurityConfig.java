@@ -23,7 +23,7 @@ public class SecurityConfig{
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 
-        //add websites
+        //Security configuration that gives user access to log in and registration page
         return http
                 .authorizeHttpRequests(requests -> requests
                 .requestMatchers("/user/login", "/user/registration")

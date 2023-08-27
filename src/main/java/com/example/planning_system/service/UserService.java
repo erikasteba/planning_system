@@ -21,7 +21,9 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
 
     public boolean createUser(User user, MultipartFile file){
+        //check if user with this email already exists
         if(userRepository.findByEmail(user.getEmail()) != null) return false;
+        //check if picture is correct size
         Image image;
         if (file.getSize() != 0){
             image = toImageEntity(file);
@@ -34,7 +36,7 @@ public class UserService {
         return true;
     }
 
-
+    //remake file to image
     private Image toImageEntity(MultipartFile file) {
         Image image = new Image();
         image.setName(file.getName());
