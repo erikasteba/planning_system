@@ -28,6 +28,8 @@ public class ProfileController {
     @GetMapping("/profile")
     public String userProfile(@AuthenticationPrincipal User currentUser, Model model) {
         model.addAttribute("user", currentUser);
+
+        //add picture to profile
         String url = "";
         if (currentUser.getImages() == null){
             logger.warn("Failed to upload image for userId: {} and name {}.Error: {} ", currentUser.getId(), currentUser.getName(), "User does not have picture");
@@ -42,6 +44,7 @@ public class ProfileController {
     @GetMapping("/edit-profile")
     public String editProfile(@AuthenticationPrincipal User currentUser, Model model) {
         model.addAttribute("user", currentUser);
+        //add picture to profile
         String url = "";
         if (currentUser.getImages() == null){
             logger.warn("Failed to upload image for userId: {} and name {}.Error: {} ", currentUser.getId(), currentUser.getName(), "User does not have picture");
