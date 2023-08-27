@@ -134,7 +134,7 @@
                                                                         <li th:each="dateTime: ${dateTimeList}">
                                                                             <span
                                                                                 th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
-                                                                                           dateTime.getMonthValue() == monthValue and
+                                                                                           dateTime.getMonthValue() == dateMonths[colNumber]  and
                                                                                            dateTime.toLocalTime().getHour() == hour}"
 
                                                                                 th:class="${i.index == 0 ? 'bg-orange' :
