@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 
@@ -39,17 +41,19 @@ public class UserController {
     }
 
     @PostMapping("/user/registration")
-    public String createUser(User user,
+    public String createUser(@RequestParam("file") MultipartFile file,
+                             User user,
                              @RequestParam String name,
                              @RequestParam String password,
                              @RequestParam String email,
                              @RequestParam String confirmPassword,
-                             Model model) {
+                             Model model) throws IOException {
         String errorMessage = "";
         String errorConfirmMessage = "";
         String errorEmailMessage = "";
         String errorPasMessage = "";
         String errorNameMessage = "";
+        String errorFileMessage = "";
         boolean mistake = false;
 
         if ( name.isEmpty() ){
@@ -76,10 +80,21 @@ public class UserController {
             model.addAttribute("errorPasMessage", errorPasMessage);
             mistake = true;
         }
+
+        String fileName = file.getOriginalFilename();
+        String format = fileName.substring(fileName.length()-3,fileName.length() );
+
+        if (!format.equals("jpg") && !format.equals("png")) {
+            errorFileMessage = "Image should be .jpg or .png";
+            System.out.println(format);
+            model.addAttribute("errorFileMessage", errorFileMessage);
+            mistake = true;
+        }
+
         if(mistake){
             return "registration";
         }
-        if (!userService.createUser(user)) {
+        if (!userService.createUser(user, file)) {
             errorConfirmMessage = "User with this email already exists";
             model.addAttribute("errorConfirmMessage", errorConfirmMessage);
             mistake = true;

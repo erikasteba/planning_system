@@ -18,6 +18,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -50,6 +51,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
+import org.springframework.web.multipart.MultipartFile;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(UserController.class)
@@ -68,6 +70,7 @@ class UserControllerTest {
     @MockBean
     private UserService userService;
 
+    @Spy
     @InjectMocks
     private UserController userController;
 
@@ -77,18 +80,24 @@ class UserControllerTest {
     @MockBean
     private SecurityContext securityContext;
 
+    private MockMultipartFile file1 = new MockMultipartFile("file", "filename.jpg", "text/plain", "some xml".getBytes());
+    private MockMultipartFile file2 = new MockMultipartFile("file", "filename.html", "text/plain", "some xml".getBytes());
+
 
     @Test
     public void testCreateUser() throws Exception {
-        Mockito.when(userService.createUser(Mockito.any(User.class))).thenReturn(true);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/user/registration")
+        Mockito.when(userService.createUser(any(User.class), any(MultipartFile.class))).thenReturn(true);
+
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/user/registration")
+                        .file(file1)
                         .param("name", "name")
                         .param("email", "n@gmail.com")
                         .param("password", "12345678")
                         .param("confirmPassword", "12345678")
+
                 )
-                .andExpect(MockMvcResultMatchers.redirectedUrl("/user/login"));
+                .andExpect(redirectedUrl("/user/login"));
     }
     @Test
     public void testCreateUserInvalid() throws Exception {
@@ -98,9 +107,10 @@ class UserControllerTest {
         user.setName("");
         user.setPassword("user123");
 
-        Mockito.when(userService.createUser(Mockito.any(User.class))).thenReturn(true);
+        Mockito.when(userService.createUser(Mockito.any(User.class),  any(MultipartFile.class))).thenReturn(true);
 
-        mockMvc.perform(post("/user/registration")
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/user/registration")
+                        .file(file2)
                         .param("name", user.getName())
                         .param("email", user.getEmail())
                         .param("password", user.getPassword())
@@ -110,19 +120,22 @@ class UserControllerTest {
                 .andExpect(model().attribute("errorEmailMessage", "Email should contain @"))
                 .andExpect(model().attribute("errorNameMessage", "Name can not be empty"))
                 .andExpect(model().attribute("errorMessage", "This password must be 8-30 symbols"))
-                .andExpect(model().attribute("errorPasMessage", "Passwords do not match"));
+                .andExpect(model().attribute("errorPasMessage", "Passwords do not match"))
+                .andExpect(model().attribute("errorFileMessage", "Image should be .jpg or .png"));
 
     }
 
     @Test
     public void testCreateUserExistingEmail() throws Exception {
-        Mockito.when(userService.createUser(Mockito.any(User.class))).thenReturn(false);
+        Mockito.when(userService.createUser(Mockito.any(User.class),  any(MultipartFile.class))).thenReturn(false);
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/user/registration")
+        mockMvc.perform(MockMvcRequestBuilders.multipart("/user/registration")
+                        .file(file1)
                         .param("name", "name")
                         .param("email", "n@gmail.com")
                         .param("password", "12345678")
                         .param("confirmPassword", "12345678")
+
                 )
                 .andExpect(model().attribute("errorConfirmMessage", "User with this email already exists"));
     }

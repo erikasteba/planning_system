@@ -72,6 +72,8 @@
           border-radius: 5px;
           cursor: pointer;
           transition: background-color 0.3s;
+          font-size: 18px;
+          padding: 12px;
         }
         .btn:hover {
           background-color: #2186c7;
@@ -95,13 +97,51 @@
         .login-link a:hover {
           color: #2186c7;
         }
+        .in-picture input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-bottom: 2px solid #2e2f54;
+            background: transparent;
+            transition: border-color 0.3s;
+        }
+
+        .in-picture input[type="file"]:focus {
+            border-color: #48a5e3;
+        }
+
+        .in-picture label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333333;
+        }
+
+        .in-picture label::before {
+            content: "Choose a profile picture";
+            font-size: 14px;
+            display: inline-block;
+            background-color: #8182DA;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .in-picture input[type="file"] {
+            display: none;
+        }
+
+        .in-picture label:hover::before {
+            background-color: #2186c7;
+        }
+
     </style>
 </head>
 
 <body>
 <div class="signup-container">
     <h1>Create</h1>
-    <form id="signup-form" action="/user/registration" method="post">
+    <form id="signup-form" action="/user/registration" method="post" enctype="multipart/form-data">
         <div class="form-group">
             <label for="name">Full Name</label>
             <input type="text" id="name" name="name" placeholder="Enter your full name" required>
@@ -138,7 +178,18 @@
             <p th:text="${errorPasMessage}" style="color: red;"></p>
 
         </div>
+        <div class="form-group">
+            <label for="file">Add profile picture</label>
+            <div class="in-picture" >
+                <label for="file"></label>
+                <input type="file" id="file" name="file" required>
+            </div>
 
+        </div>
+        <div class="error-message" style="text-align: center;">
+            <p th:text="${errorFileMessage}" style="color: red;"></p>
+
+        </div>
         <button class="btn" type="submit">Create</button>
     </form>
     <p class="login-link">Already a member? <a href="/user/login">Log in</a></p>

@@ -28,12 +28,28 @@ public class ProfileController {
     @GetMapping("/profile")
     public String userProfile(@AuthenticationPrincipal User currentUser, Model model) {
         model.addAttribute("user", currentUser);
+        String url = "";
+        if (currentUser.getImages() == null){
+            logger.warn("Failed to upload image for userId: {} and name {}.Error: {} ", currentUser.getId(), currentUser.getName(), "User does not have picture");
+            url = "/images/";
+        }else {
+            url = "/images/" + currentUser.getImages().getId();
+        }
+        model.addAttribute("img", url);
         return "profile";
     }
 
     @GetMapping("/edit-profile")
     public String editProfile(@AuthenticationPrincipal User currentUser, Model model) {
         model.addAttribute("user", currentUser);
+        String url = "";
+        if (currentUser.getImages() == null){
+            logger.warn("Failed to upload image for userId: {} and name {}.Error: {} ", currentUser.getId(), currentUser.getName(), "User does not have picture");
+            url = "/images/";
+        }else {
+            url = "/images/" + currentUser.getImages().getId();
+        }
+        model.addAttribute("img", url);
         return "edit-profile";
     }
 

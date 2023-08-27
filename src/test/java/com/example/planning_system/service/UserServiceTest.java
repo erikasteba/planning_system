@@ -10,7 +10,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -30,6 +32,7 @@ class UserServiceTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
     }
+    private MockMultipartFile file1 = new MockMultipartFile("data", "filename.jpg", "text/plain", "some xml".getBytes());
 
     @Test
     public void testCreateUser_Success() {
@@ -40,7 +43,7 @@ class UserServiceTest {
         when(userRepository.findByEmail("test@example.com")).thenReturn(null);
         when(passwordEncoder.encode("password")).thenReturn("encodedPassword");
 
-        boolean result = underTest.createUser(user);
+        boolean result = underTest.createUser(user, file1);
 
         assertTrue(result);
         assertTrue(user.isActive());
@@ -57,7 +60,7 @@ class UserServiceTest {
 
         when(userRepository.findByEmail("existing@example.com")).thenReturn(user);
 
-        boolean result = underTest.createUser(user);
+        boolean result = underTest.createUser(user, file1);
 
         assertFalse(result);
         verify(userRepository, never()).saveAndFlush(user);

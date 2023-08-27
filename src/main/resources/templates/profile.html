@@ -67,6 +67,9 @@
         <div class="container-fluid">
             <section class="profile-section">
                 <h2>Your Profile Information:</h2>
+                <div style="text-align: center;">
+                    <img th:src="${img}" height="100px" /><br><br>
+                </div>
                 <p>Name: <span th:text="${user.name}"></span></p>
                 <p>Username: <span th:text="${user.username}"></span></p>
                 <p>Email: <span th:text="${user.email}"></span></p>

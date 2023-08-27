@@ -28,11 +28,15 @@ public class User implements UserDetails {
     @Getter
     private boolean active;
     private LocalDateTime dateOfCtreated;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Activities> activities = new ArrayList<>();
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Image images;
+
     @PrePersist
-    private void init(){
+    private void init() {
         dateOfCtreated = LocalDateTime.now();
     }
 
@@ -75,6 +79,7 @@ public class User implements UserDetails {
         return id;
     }
 
+
     public User() {
     }
 
@@ -116,6 +121,16 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return active;
+    }
+
+    public void addImageToUser(Image image) {
+        image.setUser(this);
+        this.images = image;
+
+    }
+
+    public Image getImages() {
+        return images;
     }
 
 

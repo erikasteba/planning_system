@@ -62,6 +62,9 @@
                 </div>
                 <div class="info-container">
                     <h3>Your Profile Information:</h3>
+                    <div style="text-align: center;">
+                        <img th:src="${img}" height="100px" /><br><br>
+                    </div>
                     <p>Name: <span th:text="${user.name}"></span></p>
                     <p>Username: <span th:text="${user.username}"></span></p>
                     <p>Email: <span th:text="${user.email}"></span></p>
