@@ -33,9 +33,11 @@ public class FriendshipController {
     @Autowired
     private UserRepository userRepository;
 
+    String errorMessage = "";
+    String successMessage = "";
+
     @GetMapping("/")
     public String home(Model model){
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
         Long userId = user.getId();
@@ -51,22 +53,50 @@ public class FriendshipController {
             friendshipStatusMap.put(friend.getId(), friendshipStatus);
         }
         model.addAttribute("friendshipStatusMap", friendshipStatusMap);
-
+        model.addAttribute("errorMessage",errorMessage);
+        model.addAttribute("successMessage",successMessage);
+        errorMessage="";
+        successMessage="";
         return "friendship";
     }
 
     @PostMapping("/send-request")
     public String sendFriendRequest(@RequestParam Long senderId,
-                                               @RequestParam Long receiverId, Model model) {
+                                               @RequestParam String receiverEmail, Model model) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
         Long userId = user.getId();
         model.addAttribute("userId", userId);
+        try{
+            User receiverUser = userRepository.findByEmail(receiverEmail);
+            Long receiverId = receiverUser.getId();
 
-        friendshipService.sendFriendRequest(senderId, receiverId);
-        logger.info("Friend request sent from: {} to: {}", senderId, receiverId);
-        return "redirect:/friendships/";
+            User friend = userRepository.findById(receiverId).orElse(null);
+
+            if (receiverId.equals(userId)){
+                errorMessage="You can not send requests to yourself.";
+                model.addAttribute("errorMessage",errorMessage);
+                return "redirect:/friendships/";
+            }
+            if(friendshipRepository.findStatusByUser1AndUser2(user, friend) == FriendshipStatus.PENDING){
+                successMessage="Friend request was already sent!";
+                model.addAttribute("successMessage",successMessage);
+                return "redirect:/friendships/";
+            }
+
+            friendshipService.sendFriendRequest(senderId, receiverId);
+            successMessage="Friend request sent!";
+            logger.info("Friend request sent from: {} to: {}", senderId, receiverId);
+            model.addAttribute("successMessage",successMessage);
+            return "redirect:/friendships/";
+        }catch (Exception e){
+            errorMessage="The user with this email wasn't found.";
+            model.addAttribute("errorMessage",errorMessage);
+            return "redirect:/friendships/";
+        }
+
+
     }
 
     @PostMapping("/accept-request")
