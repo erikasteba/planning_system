@@ -31,6 +31,13 @@
             <a th:href="@{/user/profile}" class="btn btn-secondary back-button">Back</a>
             <div class="profile-container">
                 <div class="form-container">
+                    <h3>Update Profile Picture:</h3>
+                    <p th:if="${updateImageMessage}" th:text="${updateImageMessage}" class="update-message"></p>
+                    <form action="/user/update-image" method="post" enctype="multipart/form-data">
+                        <input type="file" id="newImage" name="newImage">
+                        <button type="submit">Update Picture</button>
+                    </form>
+
                     <h3>Update Name:</h3>
                     <p th:if="${updateNameMessage}" th:text="${updateNameMessage}" class="update-message"></p>
                     <form action="/user/update-name" method="post">
