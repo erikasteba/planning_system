@@ -2,6 +2,7 @@ package com.example.planning_system.service;
 
 import com.example.planning_system.models.Image;
 import com.example.planning_system.models.User;
+import com.example.planning_system.repositories.ImageRepository;
 import com.example.planning_system.repositories.UserRepository;
 import jakarta.persistence.Transient;
 import jakarta.transaction.Transactional;
@@ -19,6 +20,7 @@ import java.io.IOException;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ImageRepository imageRepository;
 
     public boolean createUser(User user, MultipartFile file){
         //check if user with this email already exists
@@ -49,6 +51,16 @@ public class UserService {
             throw new RuntimeException(e);
         }
         return image;
+    }
+
+    public Image updateProfileImage(User user, MultipartFile newImage) {
+        Image oldImage = user.getImages();
+        if (oldImage != null) {
+            imageRepository.delete(oldImage);
+        }
+        Image image = toImageEntity(newImage);
+        image.setPreviewImage(true);
+        return imageRepository.save(image);
     }
 
     public void updateUser(User user) {

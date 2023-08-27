@@ -1,5 +1,6 @@
 package com.example.planning_system.controllers;
 
+import com.example.planning_system.models.Image;
 import com.example.planning_system.models.User;
 import com.example.planning_system.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -12,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
@@ -133,6 +136,27 @@ public class ProfileController {
         logger.info("Updated password for userId: {}", currentUser.getId());
         redirectAttributes.addFlashAttribute("updatePasswordMessage", "Password updated successfully.");
         return "redirect:/user/edit-profile";
+    }
+
+    @PostMapping("/update-image")
+    public String updateProfile(@AuthenticationPrincipal User currentUser, @RequestParam("newImage") MultipartFile newImage, RedirectAttributes redirectAttributes) {
+        if (newImage.isEmpty()) {
+            redirectAttributes.addFlashAttribute("updateImageMessage", "No new image provided.");
+        } else {
+            if (!isValidImageFile(newImage)) {
+                redirectAttributes.addFlashAttribute("updateImageMessage", "Invalid image file type.");
+            } else {
+                Image image = userService.updateProfileImage(currentUser, newImage);
+                currentUser.addImageToUser(image);
+                userService.updateUser(currentUser);
+                redirectAttributes.addFlashAttribute("updateImageMessage", "Profile image updated successfully.");
+            }
+        }
+        return "redirect:/user/edit-profile";
+    }
+    private boolean isValidImageFile(MultipartFile file) {
+        String fileType = file.getContentType();
+        return fileType != null && (fileType.equals("image/jpeg") || fileType.equals("image/png"));
     }
 }
 
