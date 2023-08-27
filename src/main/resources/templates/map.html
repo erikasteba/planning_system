@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>Leaflet Map Example</title>
+  <title>Map</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
   <div th:insert="blocks/css-links :: css"></div>
@@ -34,6 +34,7 @@
       </li>
     </ul>
   </div>
+</div>
 <script th:inline="javascript">
   var map = L.map('map').setView([56.9496, 24.1052], 13);
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -65,7 +66,7 @@
     if (activity.latitude !== null && activity.longitude !== null) {
         L.marker([activity.latitude, activity.longitude])
             .addTo(map)
-            .bindPopup("<b>" + activity.name + "</b><br>" + activity.startTime);
+            .bindPopup("<b>Activity: " + activity.name + "</b><br> StartTime: " + activity.startTime);
     }
   });
   var colors = ["gold", "green", "orange", "red"]
@@ -82,7 +83,7 @@
         if (activity.latitude !== null && activity.longitude !== null) {
             L.marker([activity.latitude, activity.longitude], {icon: greenIcon})
                 .addTo(map)
-                .bindPopup("<b>" + activity.name + "</b><br>" + activity.startTime);
+                .bindPopup("<b>Activity: </b>" + activity.name + "<br> <b>Owner</b>: " + activity.user.name + "<br><b>StartTime: </>b>" + activity.startTime);
         }
     });
 });

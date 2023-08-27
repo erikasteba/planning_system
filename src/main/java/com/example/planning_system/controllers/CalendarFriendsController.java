@@ -19,8 +19,10 @@ import org.springframework.web.servlet.view.RedirectView;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.planning_system.service.WeekService.generateDateTimeList;
 @Controller
@@ -37,8 +39,14 @@ public class CalendarFriendsController {
     private UserRepository userRepository;
     @GetMapping("/calendar-week-friends")
     public String showCalendarWeekFr(
-            @RequestParam(name = "week", required = false, defaultValue = "2023-W33") String week,
+            @RequestParam(name = "week", required = false) String week,
             Model model) {
+
+        String defaultweek = String.valueOf(LocalDate.now().getYear()) + "-W" + String.valueOf(LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()));
+        if (week == null || week.isEmpty()) {
+            week = defaultweek;
+        }
+
         model.addAttribute("selectedWeek", week);
         String[] weekParts = week.split("-W");
         int year = Integer.parseInt(weekParts[0]);
@@ -115,7 +123,13 @@ public class CalendarFriendsController {
 
     @GetMapping("/btnNextWeekFriend")
     public RedirectView btnNextWeekFriend(
-            @RequestParam(name = "week", defaultValue = "2023-W33") String week) {
+            @RequestParam(name = "week") String week) {
+
+
+        String defaultweek = String.valueOf(LocalDate.now().getYear()) + "-W" + String.valueOf(LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()));
+        if (week == null || week.isEmpty()) {
+            week = defaultweek;
+        }
 
         String[] weekParts = week.split("-W");
         int year = Integer.parseInt(weekParts[0]);
@@ -134,7 +148,13 @@ public class CalendarFriendsController {
 
     @GetMapping("/btnPreviousWeekFriend")
     public RedirectView btnPreviousWeekFriend(
-            @RequestParam(name = "week", defaultValue = "2023-W33") String week) {
+            @RequestParam(name = "week") String week) {
+
+        String defaultweek = String.valueOf(LocalDate.now().getYear()) + "-W" + String.valueOf(LocalDate.now().get(WeekFields.of(Locale.getDefault()).weekOfWeekBasedYear()));
+        if (week == null || week.isEmpty()) {
+            week = defaultweek;
+        }
+
 
         String[] weekParts = week.split("-W");
         int year = Integer.parseInt(weekParts[0]);
