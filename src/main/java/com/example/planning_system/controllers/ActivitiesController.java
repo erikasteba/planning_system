@@ -206,7 +206,7 @@ public class ActivitiesController {
                                @RequestParam String start_time,
                                @RequestParam String end_time,
                                @RequestParam(name = "isPublic", defaultValue = "false") boolean isPublic,
-                               @RequestParam String coordinates) {
+                               @RequestParam(required = false)String coordinates) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
@@ -215,7 +215,6 @@ public class ActivitiesController {
         Optional<Activities> activities = activitiesRepository.findById(act_id);
         Activities activity = activities.get();
         model.addAttribute("act_id", act_id);
-
 
         String[] startParts = start_time.split("T");
         String[] endParts = end_time.split("T");
@@ -242,14 +241,13 @@ public class ActivitiesController {
             //model.addAttribute("errorMessage", errorMessage);
             return "redirect:"+urlAgain;
         }
-
-        String[] parts = coordinates.split(", ");
-        if (parts.length != 2) {
-            // Handle incorrect input
+        Double latitude = null;
+        Double longitude = null;
+        if (coordinates.length() > 0) {
+            String[] parts = coordinates.split(", ");
+            latitude = Double.parseDouble(parts[0]);
+            longitude = Double.parseDouble(parts[1]);
         }
-        Double latitude = Double.parseDouble(parts[0]);
-        Double longitude = Double.parseDouble(parts[1]);
-
         activity.setLatitude(latitude);
         activity.setLongitude(longitude);
         activity.setName(activity_name);
