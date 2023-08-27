@@ -104,7 +104,7 @@ public class FriendshipController {
                                       @RequestParam Long receiverId) {
         friendshipService.acceptFriendRequest(senderId, receiverId);
         logger.info("Friend request accepted by: {} with: {}", receiverId, senderId);
-        return "friendship";
+        return "redirect:/notifications";
     }
 
     @PostMapping("/decline-request")
@@ -112,7 +112,7 @@ public class FriendshipController {
                                        @RequestParam Long receiverId) {
         friendshipService.declineFriendRequest(senderId, receiverId);
         logger.info("Friend request declined by: {} with: {}", receiverId, senderId);
-        return "friendship";
+        return "redirect:/notifications";
     }
 
     @GetMapping("/list")
