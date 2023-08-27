@@ -49,13 +49,14 @@ public class ActivitiesController {
         String userName = user.getName();
 
         List<Activities> activities = activitiesRepository.findByUserId(userId);
+        Collections.sort(activities, Comparator.comparing(Activities::getStartDate));
         model.addAttribute("activities", activities);
         model.addAttribute("errorMessage", errorMessage);
 
         logger.info("Displaying activities for user with ID: {} and username {}", userId, userName);
 
         //LISTS CITIES WITH TIME ZONES.   (EXAMPLE: EUROPE/RIGA +3)
-        //In index.html
+        //In html
         Set<String> allTimeZones = ZoneId.getAvailableZoneIds();
         List<Integer> allHours = new ArrayList<>();
         TreeSet<String> sortedTimeZones = new TreeSet<>();

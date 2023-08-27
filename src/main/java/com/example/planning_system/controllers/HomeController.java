@@ -34,6 +34,7 @@ public class HomeController {
         User user = (User) authentication.getPrincipal();
         Long userId = user.getId();
         List<Notes> notes = notesRepository.findByUserId(userId);
+        Collections.reverse(notes);
         model.addAttribute("notes", notes);
 
         LocalDate today = LocalDate.now();
@@ -72,7 +73,6 @@ public class HomeController {
 
 
         //LISTS CITIES WITH TIME ZONES.   (EXAMPLE: EUROPE/RIGA +3)
-        //In index.html
         Set<String> allTimeZones = ZoneId.getAvailableZoneIds();
         TreeSet<String> sortedTimeZones = new TreeSet<>();
         for (String timeZone : allTimeZones) {
