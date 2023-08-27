@@ -11,7 +11,7 @@ input[type="password"] {
     margin-bottom: 5px;
 }
 button[type="submit"] {
-    background-color: #007bff;
+    background-color: #5a489d;
     color: #fff;
     padding: 5px 10px;
     border: none;
@@ -20,7 +20,7 @@ button[type="submit"] {
     transition: background-color 0.3s ease;
 }
 button[type="submit"]:hover {
-    background-color: #0056b3;
+    background-color: #8180c0;
 }
 .update-message {
     color: red;
@@ -34,7 +34,7 @@ button[type="submit"]:hover {
     position: fixed;
     bottom: 20px;
     right: 20px;
-    background-color: #0056b3;
+    background-color: #46377a;
     color: white;
 }
 .profile-container {
