@@ -87,18 +87,25 @@ public class MainController {
         String[] weekParts = week.split("-W");
         int year = Integer.parseInt(weekParts[0]);
         int weekNumber = Integer.parseInt(weekParts[1]);
+
         LocalDate startDate = LocalDate.ofYearDay(year, 1).with(java.time.temporal.TemporalAdjusters.firstInMonth(java.time.DayOfWeek.MONDAY));
         startDate = startDate.plusWeeks(weekNumber - 1);
         List<Integer> dateNumbers = new ArrayList<>();
+        List<Integer> dateMonths = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             dateNumbers.add(startDate.getDayOfMonth());
+
+            //System.out.println(startDate.getDayOfMonth());
+            dateMonths.add(startDate.getMonthValue());
+            //System.out.println(startDate.getMonthValue());
+
             startDate = startDate.plusDays(1);
         }
         String month = startDate.getMonth().toString();
         int monthValue = startDate.getMonth().getValue();
         model.addAttribute("dateNumbers", dateNumbers);
+            model.addAttribute("dateMonths", dateMonths);
         model.addAttribute("month", month);
-        model.addAttribute("monthValue", monthValue);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();

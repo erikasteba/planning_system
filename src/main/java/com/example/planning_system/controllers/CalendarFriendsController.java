@@ -54,14 +54,17 @@ public class CalendarFriendsController {
         LocalDate startDate = LocalDate.ofYearDay(year, 1).with(java.time.temporal.TemporalAdjusters.firstInMonth(java.time.DayOfWeek.MONDAY));
         startDate = startDate.plusWeeks(weekNumber - 1);
         List<Integer> dateNumbers = new ArrayList<>();
+        List<Integer> dateMonths = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
             dateNumbers.add(startDate.getDayOfMonth());
+            dateMonths.add(startDate.getMonthValue());
             startDate = startDate.plusDays(1);}
         String month = startDate.getMonth().toString();
         int monthValue = startDate.getMonth().getValue();
         model.addAttribute("dateNumbers", dateNumbers);
         model.addAttribute("month", month);
         model.addAttribute("monthValue", monthValue);
+        model.addAttribute("dateMonths", dateMonths);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();

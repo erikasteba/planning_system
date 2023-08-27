@@ -119,7 +119,7 @@
                                                     <ul th:each="dateTimeList, i : ${dateTimeLists}">
                                                         <li th:each="dateTime : ${dateTimeList}">
                     <span th:if="${dateTime.getDayOfMonth() == dateNumbers[colNumber] and
-                                   dateTime.getMonthValue() == monthValue and
+                                   dateTime.getMonthValue() == dateMonths[colNumber]  and
                                    dateTime.toLocalTime().getHour() == hour}"
                           th:text="${activities[i.index].name}"
                           class="bg-purple padding-5px-tb padding-15px-lr border-radius-5 margin-10px-bottom text-white font-size16 xs-font-size13">
