@@ -1,5 +1,6 @@
 package com.example.planning_system.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import org.springframework.data.annotation.Id;
@@ -33,6 +34,7 @@ public class User implements UserDetails {
     private List<Activities> activities = new ArrayList<>();
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private Image images;
 
     @PrePersist
