@@ -1,5 +1,6 @@
 package com.example.planning_system.controllers;
 
+import com.example.planning_system.models.Image;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import com.example.planning_system.models.User;
@@ -9,12 +10,14 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -229,5 +232,42 @@ class ProfileControllerTest {
 
         User updatedUser = userCaptor.getValue();
         assertNotEquals("newPassword123", updatedUser.getPassword());
+    }
+
+// Image tests
+    @Test
+    @WithMockUser(username = "testuser", password = "password", roles = "USER")
+    public void testUpdateProfileImage_Success() throws Exception {
+        User currentUser = new User("testuser", "test@example.com", "Test User", "password");
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        MockMultipartFile imageFile = new MockMultipartFile("newImage", "test-image.png", "image/png", "test image".getBytes());
+        when(userService.updateProfileImage(any(User.class), any(MultipartFile.class))).thenReturn(new Image());
+        profileController.updateImage(currentUser, imageFile, redirectAttributes);
+
+        verify(userService).updateUser(currentUser);
+        verify(userService).updateProfileImage(currentUser, imageFile);
+
+        assertEquals("Profile image updated successfully.", redirectAttributes.getFlashAttributes().get("updateImageMessage"));
+    }
+    @Test
+    @WithMockUser(username = "testuser", password = "password", roles = "USER")
+    public void testUpdateProfileImage_InvalidType() throws Exception {
+        User currentUser = new User("testuser", "test@example.com", "Test User", "password");
+        MockMultipartFile imageFile = new MockMultipartFile("newImage", "test-image.txt", "text/plain", "test image".getBytes());
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+        profileController.updateImage(currentUser, imageFile, redirectAttributes);
+
+        assertEquals("Invalid image file type.", redirectAttributes.getFlashAttributes().get("updateImageMessage"));
+    }
+    @Test
+    @WithMockUser(username = "testuser", password = "password", roles = "USER")
+    public void testUpdateProfileImageEmpty() throws Exception {
+        User currentUser = new User("testuser", "test@example.com", "Test User", "password");
+        MockMultipartFile emptyFile = new MockMultipartFile("newImage", new byte[0]);
+        RedirectAttributes redirectAttributes = new RedirectAttributesModelMap();
+
+        profileController.updateImage(currentUser, emptyFile, redirectAttributes);
+
+        assertEquals("No new image provided.", redirectAttributes.getFlashAttributes().get("updateImageMessage"));
     }
 }

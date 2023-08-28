@@ -139,7 +139,7 @@ public class ProfileController {
     }
 
     @PostMapping("/update-image")
-    public String updateProfile(@AuthenticationPrincipal User currentUser, @RequestParam("newImage") MultipartFile newImage, RedirectAttributes redirectAttributes) {
+    public String updateImage(@AuthenticationPrincipal User currentUser, @RequestParam("newImage") MultipartFile newImage, RedirectAttributes redirectAttributes) {
         if (newImage.isEmpty()) {
             redirectAttributes.addFlashAttribute("updateImageMessage", "No new image provided.");
         } else {
