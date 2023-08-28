@@ -27,7 +27,7 @@ public class ProfileController {
     private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(ActivitiesController.class);
 
-
+    // Display user's profile page
     @GetMapping("/profile")
     public String userProfile(@AuthenticationPrincipal User currentUser, Model model) {
         model.addAttribute("user", currentUser);
@@ -44,6 +44,7 @@ public class ProfileController {
         return "profile";
     }
 
+    // Display edit profile page
     @GetMapping("/edit-profile")
     public String editProfile(@AuthenticationPrincipal User currentUser, Model model) {
         model.addAttribute("user", currentUser);
@@ -59,18 +60,22 @@ public class ProfileController {
         return "edit-profile";
     }
 
+    // Update username
     @PostMapping("/update-username")
     public String updateUsername(@AuthenticationPrincipal User currentUser, String newUsername, RedirectAttributes redirectAttributes) {
         if (newUsername == null || newUsername.trim().isEmpty()) {
+            // Handle the case where the new username is empty
             redirectAttributes.addFlashAttribute("updateUsernameMessage", "Username cannot be empty.");
             logger.warn("Failed to update username for userId: {} and name {}. Error: {}", currentUser.getId(), currentUser.getName(), "Username cannot be empty.");
             return "redirect:/user/edit-profile";
         }
         if (userService.existsByUsername(newUsername)) {
+            // Handle the case where the new username is already taken
             redirectAttributes.addFlashAttribute("updateUsernameMessage", "Username is already taken.");
             logger.warn("Failed to update username for userId: {} and name {}. Error: {}", currentUser.getId(), currentUser.getName(), "Username is already taken.");
             return "redirect:/user/edit-profile";
         }
+        // Update the user's username and log the change
         String prevUsername = currentUser.getUsername();
         currentUser.setUsername(newUsername);
         userService.updateUser(currentUser);
@@ -79,6 +84,7 @@ public class ProfileController {
         return "redirect:/user/edit-profile";
     }
 
+    // Update name
     @PostMapping("/update-name")
     public String updateName(@AuthenticationPrincipal User currentUser, String newName, RedirectAttributes redirectAttributes) {
         if (newName == null || newName.trim().isEmpty()) {
@@ -93,9 +99,11 @@ public class ProfileController {
         return "redirect:/user/edit-profile";
     }
 
+    // Update email
     @PostMapping("/update-email")
     public String updateEmail(@AuthenticationPrincipal User currentUser, String newEmail, RedirectAttributes redirectAttributes) {
         if (newEmail == null || newEmail.trim().isEmpty()) {
+            // Handle the case where the new email is empty
             redirectAttributes.addFlashAttribute("updateEmailMessage", "Email cannot be empty.");
             return "redirect:/user/edit-profile";
         }
@@ -105,10 +113,12 @@ public class ProfileController {
         Matcher matcher = pattern.matcher(newEmail);
 
         if (!matcher.matches()) {
+            // Handle the case where the new email has an invalid format
             redirectAttributes.addFlashAttribute("updateEmailMessage", "Invalid email format.");
             return "redirect:/user/edit-profile";
         }
         if (userService.existsByEmail(newEmail)) {
+            // Handle the case where the new email is already in use
             redirectAttributes.addFlashAttribute("updateEmailMessage", "Email is already in use.");
             return "redirect:/user/edit-profile";
         }
@@ -120,16 +130,20 @@ public class ProfileController {
         return "redirect:/user/edit-profile";
     }
 
+    // Update password
     @PostMapping("/update-password")
     public String updatePassword(@AuthenticationPrincipal User currentUser, String newPassword, String confirmPassword, RedirectAttributes redirectAttributes) {
         if (newPassword == null || newPassword.length() < 8) {
+            // Handle the case where the new password is too short or empty
             redirectAttributes.addFlashAttribute("updatePasswordMessage", "Password must be at least 8 characters long.");
             return "redirect:/user/edit-profile";
         }
         if (!newPassword.equals(confirmPassword)) {
+            // Handle the case where the new password and confirmation do not match
             redirectAttributes.addFlashAttribute("updatePasswordMessage", "Password and confirmation do not match.");
             return "redirect:/user/edit-profile";
         }
+        // Encode the new password and update user's password
         String encodedPassword = passwordEncoder.encode(newPassword);
         currentUser.setPassword(encodedPassword);
         userService.updateUser(currentUser);
@@ -138,14 +152,18 @@ public class ProfileController {
         return "redirect:/user/edit-profile";
     }
 
+    // Update profile image
     @PostMapping("/update-image")
     public String updateImage(@AuthenticationPrincipal User currentUser, @RequestParam("newImage") MultipartFile newImage, RedirectAttributes redirectAttributes) {
+        // Check if a new image is provided
         if (newImage.isEmpty()) {
             redirectAttributes.addFlashAttribute("updateImageMessage", "No new image provided.");
         } else {
+            // Check if the uploaded file is a valid image
             if (!isValidImageFile(newImage)) {
                 redirectAttributes.addFlashAttribute("updateImageMessage", "Invalid image file type.");
             } else {
+                // Update the user's profile image
                 Image image = userService.updateProfileImage(currentUser, newImage);
                 currentUser.addImageToUser(image);
                 userService.updateUser(currentUser);
@@ -154,6 +172,7 @@ public class ProfileController {
         }
         return "redirect:/user/edit-profile";
     }
+    // Helper method to check if a file is a valid image
     private boolean isValidImageFile(MultipartFile file) {
         String fileType = file.getContentType();
         return fileType != null && (fileType.equals("image/jpeg") || fileType.equals("image/png"));
