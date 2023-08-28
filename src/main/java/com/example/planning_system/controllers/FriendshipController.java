@@ -79,7 +79,8 @@ public class FriendshipController {
                 model.addAttribute("errorMessage",errorMessage);
                 return "redirect:/friendships/";
             }
-            if(friendshipRepository.findStatusByUser1AndUser2(user, friend) == FriendshipStatus.PENDING){
+            if(friendshipRepository.findStatusByUser1AndUser2(user, friend) == FriendshipStatus.PENDING
+            || friendshipRepository.findStatusByUser1AndUser2(user, friend) == FriendshipStatus.ACCEPTED){
                 successMessage="Friend request was already sent!";
                 model.addAttribute("successMessage",successMessage);
                 return "redirect:/friendships/";
