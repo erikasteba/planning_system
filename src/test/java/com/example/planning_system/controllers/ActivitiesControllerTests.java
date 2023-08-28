@@ -123,7 +123,8 @@ public class ActivitiesControllerTests {
                         .param("start_time", "2023-08-20T10:00")
                         .param("end_time", "2023-08-30T12:00")
                         .param("is_public", "true"))
-                .andExpect(status().isOk());
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/calendar/activities"));
 
         ArgumentCaptor<Activities> activityCaptor = ArgumentCaptor.forClass(Activities.class);
         verify(activitiesRepository, times(1)).save(activityCaptor.capture());

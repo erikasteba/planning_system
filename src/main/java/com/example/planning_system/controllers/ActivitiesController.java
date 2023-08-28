@@ -243,10 +243,12 @@ public class ActivitiesController {
         }
         Double latitude = null;
         Double longitude = null;
-        if (coordinates.length() > 0) {
-            String[] parts = coordinates.split(", ");
-            latitude = Double.parseDouble(parts[0]);
-            longitude = Double.parseDouble(parts[1]);
+        if(coordinates != null) {
+            if (coordinates.length() > 0) {
+                String[] parts = coordinates.split(", ");
+                latitude = Double.parseDouble(parts[0]);
+                longitude = Double.parseDouble(parts[1]);
+            }
         }
         activity.setLatitude(latitude);
         activity.setLongitude(longitude);
